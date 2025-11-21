@@ -775,6 +775,17 @@ section,
   font-family: var(--heading-font);
 }
 
+@media screen and (max-width: 768px) {
+  .section-title h2 {
+    line-height: 1.4;
+  }
+
+  .section-title h2::after {
+    background: transparent;
+  }
+
+}
+
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
@@ -4936,9 +4947,12 @@ section,
 # Hero Logo Animation - Floating Effect
 --------------------------------------------------------------*/
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-20px);
   }
