@@ -200,6 +200,43 @@
         .btn-whatsapp i {
             font-size: 1.2rem;
         }
+        .status-highlight {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status-highlight.status-falta-atender {
+            border-left-color: #dc3545;
+        }
+        .status-highlight.status-em-atendimento {
+            border-left-color: #F27920;
+        }
+        .status-highlight.status-atendido {
+            border-left-color: #198754;
+        }
+        .status-badge-large {
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .action-buttons-top {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
     </style>
 </head>
 <body>
@@ -218,6 +255,29 @@
     </nav>
 
     <div class="container">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                <i class="bi bi-check-circle"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                <i class="bi bi-exclamation-circle"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                <i class="bi bi-exclamation-circle"></i> Por favor, corrija os erros abaixo.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <ul class="mb-0 mt-2">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="detail-card">
             <div class="form-header-custom">
                 <h2>
@@ -226,6 +286,51 @@
                 <p class="text-muted mb-0 mt-2">
                     <small>Formulário #{{ $form->id }}</small>
                 </p>
+            </div>
+
+            <!-- Status em Destaque -->
+            @php
+                $statusLabels = [
+                    'falta-atender' => 'Falta Atender',
+                    'em-atendimento' => 'Em Atendimento',
+                    'atendido' => 'Atendido'
+                ];
+                $statusColors = [
+                    'falta-atender' => '#dc3545',
+                    'em-atendimento' => '#F27920',
+                    'atendido' => '#198754'
+                ];
+                $currentStatus = $form->status ?? 'falta-atender';
+            @endphp
+            <div class="status-highlight status-{{ $currentStatus }}">
+                <div class="status-label">Status do Atendimento</div>
+                <span class="status-badge-large" style="background-color: {{ $statusColors[$currentStatus] ?? '#6c757d' }}; color: white;">
+                    <i class="bi bi-{{ $currentStatus == 'atendido' ? 'check-circle' : ($currentStatus == 'em-atendimento' ? 'clock-history' : 'exclamation-triangle') }}"></i>
+                    {{ $statusLabels[$currentStatus] ?? ucfirst($currentStatus) }}
+                </span>
+            </div>
+
+            <!-- Botões de Ação no Topo -->
+            <div class="action-buttons-top d-flex gap-2 flex-wrap">
+                <a href="{{ route('dashboard') }}" class="btn btn-secondary-custom">
+                    <i class="bi bi-arrow-left"></i> Voltar para Lista
+                </a>
+                <a href="mailto:{{ $form->email }}?subject=Contato%20GrowFin%20-%20Formulário%20#{{ $form->id }}" class="btn btn-primary-custom">
+                    <i class="bi bi-envelope"></i> Enviar Email
+                </a>
+                @if($form->phone)
+                @php
+                    $phoneNumber = preg_replace('/\D/', '', $form->phone);
+                    $whatsappMessage = urlencode("Olá! Entrei em contato através do formulário do site GrowFin (Formulário #{$form->id})");
+                    $whatsappUrl = "https://wa.me/55{$phoneNumber}?text={$whatsappMessage}";
+                @endphp
+                <a href="{{ $whatsappUrl }}" target="_blank" class="btn btn-whatsapp">
+                    <i class="bi bi-whatsapp"></i> WhatsApp
+                </a>
+                @endif
+                <a href="{{ route('dashboard.forms.edit', $form) }}" class="btn btn-primary-custom">
+                    <i class="bi bi-pencil"></i> Editar Formulário
+                </a>
             </div>
 
             <form>
@@ -261,13 +366,25 @@
                     <div class="col-md-6">
                         <div class="form-group-custom">
                             <label class="form-label-custom">Telefone</label>
-                            <input type="tel" class="form-control-custom" value="{{ $form->phone ?? '' }}" disabled>
                             @if($form->phone)
-                            <small class="text-muted mt-1 d-block">
-                                <a href="tel:{{ $form->phone }}" style="color: var(--accent-color);">
-                                    <i class="bi bi-telephone"></i> Ligar
-                                </a>
-                            </small>
+                                @php
+                                    $phone = preg_replace('/\D/', '', $form->phone);
+                                    if(strlen($phone) == 11) {
+                                        $formatted = '(' . substr($phone, 0, 2) . ') ' . substr($phone, 2, 5) . '-' . substr($phone, 7);
+                                    } elseif(strlen($phone) == 10) {
+                                        $formatted = '(' . substr($phone, 0, 2) . ') ' . substr($phone, 2, 4) . '-' . substr($phone, 6);
+                                    } else {
+                                        $formatted = $form->phone;
+                                    }
+                                @endphp
+                                <input type="tel" class="form-control-custom" value="{{ $formatted }}" disabled>
+                                <small class="text-muted mt-1 d-block">
+                                    <a href="tel:{{ $phone }}" style="color: var(--accent-color);">
+                                        <i class="bi bi-telephone"></i> Ligar
+                                    </a>
+                                </small>
+                            @else
+                                <input type="tel" class="form-control-custom" value="" disabled>
                             @endif
                         </div>
                     </div>
@@ -382,11 +499,11 @@
                             <input type="text" class="form-control-custom" value="{{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level ?? 'Não informado') }}" disabled>
                         </div>
                     </div>
-                    <!-- Mensagem -->
+                    <!-- Observação -->
                     @if($form->message)
                     <div class="col-12">
                         <div class="form-group-custom">
-                            <label class="form-label-custom">Mensagem</label>
+                            <label class="form-label-custom">Observação</label>
                             <textarea class="form-control-custom" rows="4" disabled>{{ $form->message }}</textarea>
                         </div>
                     </div>
@@ -398,25 +515,6 @@
                             <input type="text" class="form-control-custom" value="{{ $form->created_at->format('d/m/Y H:i:s') }}" disabled>
                         </div>
                     </div>
-                </div>
-
-                <div class="mt-4 d-flex gap-2 flex-wrap">
-                    <a href="{{ route('dashboard') }}" class="btn btn-secondary-custom">
-                        <i class="bi bi-arrow-left"></i> Voltar para Lista
-                    </a>
-                    <a href="mailto:{{ $form->email }}?subject=Contato%20GrowFin%20-%20Formulário%20#{{ $form->id }}" class="btn btn-primary-custom">
-                        <i class="bi bi-envelope"></i> Enviar Email
-                    </a>
-                    @if($form->phone)
-                    @php
-                        $phoneNumber = preg_replace('/\D/', '', $form->phone);
-                        $whatsappMessage = urlencode("Olá! Entrei em contato através do formulário do site GrowFin (Formulário #{$form->id})");
-                        $whatsappUrl = "https://wa.me/55{$phoneNumber}?text={$whatsappMessage}";
-                    @endphp
-                    <a href="{{ $whatsappUrl }}" target="_blank" class="btn btn-whatsapp">
-                        <i class="bi bi-whatsapp"></i> WhatsApp
-                    </a>
-                    @endif
                 </div>
             </form>
         </div>

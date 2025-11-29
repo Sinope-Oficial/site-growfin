@@ -20,6 +20,7 @@ class Form extends Model
         'financial_areas',
         'cashflow_predictability',
         'urgency_level',
+        'status',
         'type',
         'message',
     ];

@@ -27,5 +27,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/forms/{form}', [DashboardController::class, 'show'])->name('dashboard.forms.show');
+    Route::get('/dashboard/forms/{form}/edit', [DashboardController::class, 'edit'])->name('dashboard.forms.edit');
+    Route::put('/dashboard/forms/{form}', [DashboardController::class, 'update'])->name('dashboard.forms.update');
+    Route::delete('/dashboard/forms/{form}', [DashboardController::class, 'destroy'])->name('dashboard.forms.destroy');
 });
 

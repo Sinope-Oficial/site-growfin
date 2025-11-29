@@ -36,7 +36,9 @@ class FormController extends Controller
             ], 422);
         }
 
-        $form = Form::create($request->all());
+        $data = $request->all();
+        $data['status'] = 'falta-atender'; // Status padrão para novos formulários
+        $form = Form::create($data);
 
         return response()->json([
             'success' => true,
