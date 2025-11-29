@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+@extends('layouts.app')
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>GrowFin - BPO Financeiro e Soluções Financeiras para Empresas</title>
-  <meta name="description"
-    content="GrowFin - Empresa especializada em BPO Financeiro: análise de contas, contas a pagar, contas a receber, conciliação bancária e de cartões, DRE, DFC e muito mais.">
-  <meta name="keywords"
-    content="GrowFin, BPO Financeiro, contas a pagar, contas a receber, conciliação bancária, DRE, DFC, análise financeira">
+@section('title', 'GrowFin - BPO Financeiro e Soluções Financeiras para Empresas')
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-    rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
-
-</head>
-
-<body class="index-page">
-
-  <main class="main">
+@section('content')
 
     <!-- Hero Section -->
     <section id="hero" class="hero section">
@@ -84,7 +51,7 @@
 
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
             <div class="hero-image">
-              <img src="assets/img/logo.jpeg" alt="BPO Financeiro" class="img-fluid logo-float">
+              <img src="{{ asset('assets/img/logo.jpeg') }}" alt="BPO Financeiro" class="img-fluid logo-float">
               <div class="image-badge">
                 <span>BPO Financeiro</span>
                 <p>Soluções Completas</p>
@@ -146,7 +113,7 @@
 
           <div class="col-lg-6">
             <div class="about-image position-relative" data-aos="fade-left" data-aos-delay="200">
-              <img src="./assets/img/paulo-helio-2.jpeg" alt="BPO Financeiro" class="img-fluid main-image rounded">
+              <img src="{{ asset('assets/img/paulo-helio-2.jpeg') }}" alt="BPO Financeiro" class="img-fluid main-image rounded">
               <div class="experience-badge" data-aos="zoom-in" data-aos-delay="500">
                 <span>BPO</span>
                 <p>Financeiro Completo</p>
@@ -167,7 +134,7 @@
         <div class="row align-items-center g-5">
           <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
             <div class="ceo-image position-relative">
-              <img src="assets/img/ceo-paulo-helio.jpeg" alt="Paulo Hélio - CEO e Fundador GrowFin"
+              <img src="{{ asset('assets/img/ceo-paulo-helio.jpeg') }}" alt="Paulo Hélio - CEO e Fundador GrowFin"
                 class="img-fluid rounded">
               <div class="ceo-badge">
                 <i class="bi bi-award"></i>
@@ -297,7 +264,7 @@
         <div class="row mt-5 align-items-center">
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
             <div class="service-image-block">
-              <img src="./paulo-helio-2.jpeg" alt="BPO Financeiro" class="img-fluid">
+              <img src="{{ asset('assets/img/paulo-helio-2.jpeg') }}" alt="BPO Financeiro" class="img-fluid">
             </div>
           </div>
 
@@ -453,7 +420,7 @@
 
       </div>
 
-    </section><!-- /Projects Section -->
+    </section><!-- /Services Details Section -->
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section">
@@ -504,7 +471,7 @@
                 </div>
                 <div class="testimonial-footer">
                   <div class="author-info">
-                    <img src="assets/img/person/person-f-12.webp" alt="Autor" class="author-avatar">
+                    <img src="{{ asset('assets/img/person/person-f-12.webp') }}" alt="Autor" class="author-avatar">
                     <div class="author-details">
                       <h4>Maria Silva</h4>
                       <span class="role">Diretora Financeira</span>
@@ -535,7 +502,7 @@
                 </div>
                 <div class="testimonial-footer">
                   <div class="author-info">
-                    <img src="assets/img/person/person-m-14.webp" alt="Autor" class="author-avatar">
+                    <img src="{{ asset('assets/img/person/person-m-14.webp') }}" alt="Autor" class="author-avatar">
                     <div class="author-details">
                       <h4>João Santos</h4>
                       <span class="role">Gerente Financeiro</span>
@@ -566,7 +533,7 @@
                 </div>
                 <div class="testimonial-footer">
                   <div class="author-info">
-                    <img src="assets/img/person/person-f-11.webp" alt="Autor" class="author-avatar">
+                    <img src="{{ asset('assets/img/person/person-f-11.webp') }}" alt="Autor" class="author-avatar">
                     <div class="author-details">
                       <h4>Ana Paula Costa</h4>
                       <span class="role">Diretora Comercial</span>
@@ -682,256 +649,6 @@
 
     </section><!-- /Benefits Section -->
 
-    <!-- Team Section -->
-    <section id="team" class="team section" style="display: none;">
-      <!-- Team section hidden for BPO Financeiro -->
-
-      <div class="row gy-4">
-
-        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-          <div class="team-card featured">
-            <div class="team-header">
-              <div class="team-image">
-                <img src="assets/img/construction/team-1.webp" class="img-fluid" alt="">
-                <div class="experience-badge">15+ Years</div>
-              </div>
-              <div class="team-info">
-                <h4>Marcus Thompson</h4>
-                <span class="position">Project Manager</span>
-                <div class="contact-info">
-                  <a href="mailto:marcus@example.com"><i class="bi bi-envelope"></i> marcus@example.com</a>
-                  <a href="tel:+1555123456"><i class="bi bi-telephone"></i> +1 (555) 123-456</a>
-                </div>
-              </div>
-            </div>
-            <div class="team-details">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.</p>
-              <div class="credentials">
-                <div class="cred-item">
-                  <i class="bi bi-award"></i>
-                  <span>PMP Certified</span>
-                </div>
-                <div class="cred-item">
-                  <i class="bi bi-shield-check"></i>
-                  <span>OSHA 30</span>
-                </div>
-              </div>
-              <div class="social-links">
-                <a href="#"><i class="bi bi-linkedin"></i></a>
-                <a href="#"><i class="bi bi-twitter-x"></i></a>
-                <a href="#"><i class="bi bi-facebook"></i></a>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Featured Team Member -->
-
-        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-          <div class="team-card featured">
-            <div class="team-header">
-              <div class="team-image">
-                <img src="assets/img/construction/team-2.webp" class="img-fluid" alt="">
-                <div class="experience-badge">12+ Years</div>
-              </div>
-              <div class="team-info">
-                <h4>Sarah Rodriguez</h4>
-                <span class="position">Site Supervisor</span>
-                <div class="contact-info">
-                  <a href="mailto:sarah@example.com"><i class="bi bi-envelope"></i> sarah@example.com</a>
-                  <a href="tel:+1555123457"><i class="bi bi-telephone"></i> +1 (555) 123-457</a>
-                </div>
-              </div>
-            </div>
-            <div class="team-details">
-              <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat.</p>
-              <div class="credentials">
-                <div class="cred-item">
-                  <i class="bi bi-person-badge"></i>
-                  <span>Licensed Contractor</span>
-                </div>
-                <div class="cred-item">
-                  <i class="bi bi-tools"></i>
-                  <span>Site Management</span>
-                </div>
-              </div>
-              <div class="social-links">
-                <a href="#"><i class="bi bi-linkedin"></i></a>
-                <a href="#"><i class="bi bi-twitter-x"></i></a>
-                <a href="#"><i class="bi bi-instagram"></i></a>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Featured Team Member -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-          <div class="team-card compact">
-            <div class="member-photo">
-              <img src="assets/img/construction/team-3.webp" class="img-fluid" alt="">
-              <div class="hover-overlay">
-                <div class="overlay-content">
-                  <h5>David Chen</h5>
-                  <span>Lead Engineer</span>
-                  <div class="quick-contact">
-                    <a href="#"><i class="bi bi-envelope"></i></a>
-                    <a href="#"><i class="bi bi-telephone"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="member-summary">
-              <h5>David Chen</h5>
-              <span>Lead Engineer</span>
-              <div class="skills">
-                <span class="skill-tag">PE License</span>
-                <span class="skill-tag">LEED AP</span>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Compact Team Member -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-          <div class="team-card compact">
-            <div class="member-photo">
-              <img src="assets/img/construction/team-4.webp" class="img-fluid" alt="">
-              <div class="hover-overlay">
-                <div class="overlay-content">
-                  <h5>Lisa Johnson</h5>
-                  <span>Safety Coordinator</span>
-                  <div class="quick-contact">
-                    <a href="#"><i class="bi bi-envelope"></i></a>
-                    <a href="#"><i class="bi bi-telephone"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="member-summary">
-              <h5>Lisa Johnson</h5>
-              <span>Safety Coordinator</span>
-              <div class="skills">
-                <span class="skill-tag">CSP Certified</span>
-                <span class="skill-tag">Safety Expert</span>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Compact Team Member -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-          <div class="team-card compact">
-            <div class="member-photo">
-              <img src="assets/img/construction/team-5.webp" class="img-fluid" alt="">
-              <div class="hover-overlay">
-                <div class="overlay-content">
-                  <h5>Robert Martinez</h5>
-                  <span>Equipment Operator</span>
-                  <div class="quick-contact">
-                    <a href="#"><i class="bi bi-envelope"></i></a>
-                    <a href="#"><i class="bi bi-telephone"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="member-summary">
-              <h5>Robert Martinez</h5>
-              <span>Equipment Operator</span>
-              <div class="skills">
-                <span class="skill-tag">Heavy Equipment</span>
-                <span class="skill-tag">10+ Years</span>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Compact Team Member -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-          <div class="team-card compact">
-            <div class="member-photo">
-              <img src="assets/img/construction/team-6.webp" class="img-fluid" alt="">
-              <div class="hover-overlay">
-                <div class="overlay-content">
-                  <h5>Emily Davis</h5>
-                  <span>Quality Control Specialist</span>
-                  <div class="quick-contact">
-                    <a href="#"><i class="bi bi-envelope"></i></a>
-                    <a href="#"><i class="bi bi-telephone"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="member-summary">
-              <h5>Emily Davis</h5>
-              <span>Quality Control Specialist</span>
-              <div class="skills">
-                <span class="skill-tag">Quality Assurance</span>
-                <span class="skill-tag">Certified</span>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Compact Team Member -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-          <div class="team-card compact">
-            <div class="member-photo">
-              <img src="assets/img/construction/team-7.webp" class="img-fluid" alt="">
-              <div class="hover-overlay">
-                <div class="overlay-content">
-                  <h5>James Wilson</h5>
-                  <span>Foreman</span>
-                  <div class="quick-contact">
-                    <a href="#"><i class="bi bi-envelope"></i></a>
-                    <a href="#"><i class="bi bi-telephone"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="member-summary">
-              <h5>James Wilson</h5>
-              <span>Foreman</span>
-              <div class="skills">
-                <span class="skill-tag">Supervisor</span>
-                <span class="skill-tag">Leadership</span>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Compact Team Member -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-          <div class="team-card compact">
-            <div class="member-photo">
-              <img src="assets/img/construction/team-8.webp" class="img-fluid" alt="">
-              <div class="hover-overlay">
-                <div class="overlay-content">
-                  <h5>Amanda Taylor</h5>
-                  <span>Estimator</span>
-                  <div class="quick-contact">
-                    <a href="#"><i class="bi bi-envelope"></i></a>
-                    <a href="#"><i class="bi bi-telephone"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="member-summary">
-              <h5>Amanda Taylor</h5>
-              <span>Estimator</span>
-              <div class="skills">
-                <span class="skill-tag">Cost Professional</span>
-                <span class="skill-tag">Analytics</span>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Compact Team Member -->
-
-      </div>
-
-      </div>
-
-    </section><!-- /Team Section -->
-
     <!-- Call To Action Section -->
     <section id="call-to-action" class="call-to-action section light-background">
 
@@ -978,26 +695,27 @@
                   <p>Comece a otimizar a gestão financeira da sua empresa hoje mesmo</p>
                 </div>
 
-                <form action="forms/get-a-quote.php" method="post" class="php-email-form">
+                <form method="post" class="php-email-form" id="quote-form">
+                  @csrf
                   <div class="row g-3">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input type="text" name="name" class="form-control" placeholder="Seu Nome" required="">
+                        <input type="text" name="name" class="form-control" placeholder="Seu Nome" required>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <input type="email" name="email" class="form-control" placeholder="Seu Email" required="">
+                        <input type="email" name="email" class="form-control" placeholder="Seu Email" required>
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="form-group">
-                        <input type="tel" name="phone" class="form-control" placeholder="Telefone" required="">
+                        <input type="tel" name="phone" class="form-control" placeholder="Telefone">
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="form-group">
-                        <select name="type" class="form-control" required="">
+                        <select name="type" class="form-control">
                           <option value="">Selecione o Tipo de Serviço</option>
                           <option value="bpo-completo">BPO Financeiro Completo</option>
                           <option value="contas-pagar">Contas a Pagar</option>
@@ -1015,7 +733,7 @@
                     <div class="col-12">
                       <div class="form-group">
                         <textarea name="message" class="form-control" rows="4" placeholder="Detalhes da sua necessidade"
-                          required=""></textarea>
+                          required></textarea>
                       </div>
                     </div>
                   </div>
@@ -1157,38 +875,52 @@
 
     </section><!-- /Contact Section -->
 
-  </main>
+@endsection
 
-  <footer id="footer" class="footer dark-background pt-4">
-
-
-    <div class="container copyright text-center">
-      <p>© <span>Copyright</span> <strong class="px-1">GrowFin</strong> <span>Todos os Direitos Reservados</span>
-      </p>
-      <div class="credits">
-        Feito por <a href="https://www.sinopeoficial.com.br/">Sinope</a>
-      </div>
-    </div>
-
-  </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
-
-</body>
-
-</html>
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('form#quote-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const loading = form.querySelector('.loading');
+      const errorMessage = form.querySelector('.error-message');
+      const sentMessage = form.querySelector('.sent-message');
+      
+      // Reset messages
+      loading.style.display = 'block';
+      errorMessage.style.display = 'none';
+      sentMessage.style.display = 'none';
+      
+      fetch('{{ route("form.store") }}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        loading.style.display = 'none';
+        if (data.success) {
+          sentMessage.style.display = 'block';
+          form.reset();
+        } else {
+          errorMessage.innerHTML = data.message || 'Ocorreu um erro ao enviar o formulário.';
+          errorMessage.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        loading.style.display = 'none';
+        errorMessage.innerHTML = 'Ocorreu um erro ao enviar o formulário. Tente novamente.';
+        errorMessage.style.display = 'block';
+      });
+    });
+  }
+});
+</script>
+@endsection
