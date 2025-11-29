@@ -7,30 +7,198 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
+        :root {
+            --accent-color: #F27920;
+            --heading-color: #102a49;
+            --default-color: #333333;
+        }
         body {
             background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
         }
         .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, #d66a1a 100%);
+            box-shadow: 0 2px 10px rgba(242, 121, 32, 0.3);
         }
         .detail-card {
             background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             margin-top: 2rem;
+            border-top: 4px solid var(--accent-color);
         }
-        .detail-item {
-            padding: 1rem 0;
-            border-bottom: 1px solid #e9ecef;
+        .form-header-custom {
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
         }
-        .detail-item:last-child {
-            border-bottom: none;
+        .form-header-custom h2 {
+            color: var(--heading-color);
+            font-weight: 700;
+            margin: 0;
         }
-        .detail-label {
+        .form-header-custom h2 i {
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+        .form-group-custom {
+            margin-bottom: 1.5rem;
+        }
+        .form-label-custom {
             font-weight: 600;
-            color: #667eea;
+            color: var(--heading-color);
             margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-control-custom {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+            color: var(--default-color);
+        }
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(242, 121, 32, 0.1);
+            background-color: #fff;
+        }
+        .form-control-custom:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+        .badge-custom {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+        .badge-orange {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .badge-info-custom {
+            background-color: rgba(242, 121, 32, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(242, 121, 32, 0.3);
+        }
+        .badge-warning-custom {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #856404;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+        .badge-success-custom {
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #0f5132;
+            border: 1px solid rgba(25, 135, 84, 0.3);
+        }
+        .badge-danger-custom {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #842029;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+        .badge-secondary-custom {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #495057;
+            border: 1px solid rgba(108, 117, 125, 0.3);
+        }
+        .btn-primary-custom {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom:hover {
+            background-color: #d66a1a;
+            border-color: #d66a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(242, 121, 32, 0.3);
+            color: white;
+        }
+        .btn-secondary-custom {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .btn-secondary-custom:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+            color: white;
+        }
+        .checkbox-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent-color);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .checkbox-item input[type="checkbox"]:checked {
+            accent-color: var(--accent-color);
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        .checkbox-item input[type="checkbox"]:checked::before {
+            background-color: var(--accent-color);
+        }
+        .checkbox-item:has(input[type="checkbox"]:checked) {
+            background-color: rgba(242, 121, 32, 0.1);
+            border-color: var(--accent-color);
+        }
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .btn-whatsapp {
+            background-color: #25D366 !important;
+            border-color: #25D366 !important;
+            color: white !important;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-whatsapp:hover {
+            background-color: #20BA5A !important;
+            border-color: #20BA5A !important;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+        .btn-whatsapp i {
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -51,170 +219,206 @@
 
     <div class="container">
         <div class="detail-card">
-            <h2 class="mb-4">
-                <i class="bi bi-file-earmark-text"></i> Detalhes do Formulário #{{ $form->id }}
-            </h2>
-
-            <div class="detail-item">
-                <div class="detail-label">Nome e Sobrenome</div>
-                <div>{{ $form->name }} {{ $form->lastname ?? '' }}</div>
+            <div class="form-header-custom">
+                <h2>
+                    <i class="bi bi-person"></i> {{ $form->name }} {{ $form->lastname ?? '' }}
+                </h2>
+                <p class="text-muted mb-0 mt-2">
+                    <small>Formulário #{{ $form->id }}</small>
+                </p>
             </div>
 
-            <div class="detail-item">
-                <div class="detail-label">Email</div>
-                <div>
-                    <a href="mailto:{{ $form->email }}">{{ $form->email }}</a>
+            <form>
+
+                <div class="row g-3">
+                    <!-- Nome -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Nome</label>
+                            <input type="text" class="form-control-custom" value="{{ $form->name }}" disabled>
+                        </div>
+                    </div>
+                    <!-- Sobrenome -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Sobrenome</label>
+                            <input type="text" class="form-control-custom" value="{{ $form->lastname ?? '' }}" disabled>
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Email</label>
+                            <input type="email" class="form-control-custom" value="{{ $form->email }}" disabled>
+                            <small class="text-muted mt-1 d-block">
+                                <a href="mailto:{{ $form->email }}" style="color: var(--accent-color);">
+                                    <i class="bi bi-envelope"></i> Enviar email
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                    <!-- Telefone -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Telefone</label>
+                            <input type="tel" class="form-control-custom" value="{{ $form->phone ?? '' }}" disabled>
+                            @if($form->phone)
+                            <small class="text-muted mt-1 d-block">
+                                <a href="tel:{{ $form->phone }}" style="color: var(--accent-color);">
+                                    <i class="bi bi-telephone"></i> Ligar
+                                </a>
+                            </small>
+                            @endif
+                        </div>
+                    </div>
+                    <!-- Tamanho da Empresa -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Tamanho da Empresa</label>
+                            @php
+                                $sizes = [
+                                    'micro' => 'Micro',
+                                    'pequena' => 'Pequena',
+                                    'media' => 'Média',
+                                    'grande' => 'Grande'
+                                ];
+                            @endphp
+                            <input type="text" class="form-control-custom" value="{{ $sizes[$form->company_size] ?? ucfirst($form->company_size ?? 'Não informado') }}" disabled>
+                        </div>
+                    </div>
+                    <!-- Setor de Atuação -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Setor de Atuação</label>
+                            @php
+                                $sectors = [
+                                    'servicos' => 'Serviços',
+                                    'comercio' => 'Comércio',
+                                    'industria' => 'Indústria',
+                                    'tecnologia' => 'Tecnologia',
+                                    'outro' => 'Outro'
+                                ];
+                            @endphp
+                            <input type="text" class="form-control-custom" value="{{ $sectors[$form->sector] ?? ucfirst($form->sector ?? 'Não informado') }}" disabled>
+                        </div>
+                    </div>
+                    <!-- Maior Dor no Financeiro -->
+                    <div class="col-12">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Maior Dor no Financeiro</label>
+                            <div class="checkbox-list">
+                                @php
+                                    $pains = [
+                                        'falta-controle' => 'Falta de controle',
+                                        'falta-tempo' => 'Falta de tempo',
+                                        'falta-previsibilidade' => 'Falta de previsibilidade',
+                                        'retrabalho-operacional' => 'Retrabalho operacional',
+                                        'inadimplencia' => 'Inadimplência',
+                                        'desorganizacao' => 'Desorganização',
+                                        'multas-juros' => 'Pagamento de multas e juros por atraso'
+                                    ];
+                                @endphp
+                                @foreach($pains as $key => $label)
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="pain-{{ $key }}" 
+                                               {{ ($form->financial_pain && in_array($key, $form->financial_pain)) ? 'checked' : '' }} 
+                                               disabled>
+                                        <label for="pain-{{ $key }}">{{ $label }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Áreas Financeiras que Precisa de Ajuda -->
+                    <div class="col-12">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Áreas Financeiras que Precisa de Ajuda</label>
+                            <div class="checkbox-list">
+                                @php
+                                    $areas = [
+                                        'contas-pagar' => 'Contas a pagar',
+                                        'contas-receber' => 'Contas a receber',
+                                        'conciliacao-bancaria' => 'Conciliação bancária',
+                                        'fluxo-caixa' => 'Fluxo de caixa',
+                                        'previsao-financeira' => 'Previsão financeira'
+                                    ];
+                                @endphp
+                                @foreach($areas as $key => $label)
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="area-{{ $key }}" 
+                                               {{ ($form->financial_areas && in_array($key, $form->financial_areas)) ? 'checked' : '' }} 
+                                               disabled>
+                                        <label for="area-{{ $key }}">{{ $label }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Previsibilidade de Fluxo de Caixa -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Previsibilidade de Fluxo de Caixa (30 dias)</label>
+                            @php
+                                $predictability = [
+                                    'sim' => 'Sim',
+                                    'parcial' => 'Parcial',
+                                    'nao' => 'Não'
+                                ];
+                            @endphp
+                            <input type="text" class="form-control-custom" value="{{ $predictability[$form->cashflow_predictability] ?? ucfirst($form->cashflow_predictability ?? 'Não informado') }}" disabled>
+                        </div>
+                    </div>
+                    <!-- Nível de Urgência -->
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Nível de Urgência</label>
+                            @php
+                                $urgencyLabels = [
+                                    'urgente' => 'Preciso resolver urgente',
+                                    '30-dias' => 'Quero resolver nos próximos 30 dias',
+                                    'avaliando' => 'Estou avaliando opções'
+                                ];
+                            @endphp
+                            <input type="text" class="form-control-custom" value="{{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level ?? 'Não informado') }}" disabled>
+                        </div>
+                    </div>
+                    <!-- Mensagem -->
+                    @if($form->message)
+                    <div class="col-12">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Mensagem</label>
+                            <textarea class="form-control-custom" rows="4" disabled>{{ $form->message }}</textarea>
+                        </div>
+                    </div>
+                    @endif
+                    <!-- Data de Envio -->
+                    <div class="col-12">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Data de Envio</label>
+                            <input type="text" class="form-control-custom" value="{{ $form->created_at->format('d/m/Y H:i:s') }}" disabled>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            @if($form->phone)
-            <div class="detail-item">
-                <div class="detail-label">Telefone</div>
-                <div>
-                    <a href="tel:{{ $form->phone }}">{{ $form->phone }}</a>
-                </div>
-            </div>
-            @endif
-
-            @if($form->company_size)
-            <div class="detail-item">
-                <div class="detail-label">Tamanho da Empresa</div>
-                <div>
+                <div class="mt-4 d-flex gap-2 flex-wrap">
+                    <a href="{{ route('dashboard') }}" class="btn btn-secondary-custom">
+                        <i class="bi bi-arrow-left"></i> Voltar para Lista
+                    </a>
+                    <a href="mailto:{{ $form->email }}?subject=Contato%20GrowFin%20-%20Formulário%20#{{ $form->id }}" class="btn btn-primary-custom">
+                        <i class="bi bi-envelope"></i> Enviar Email
+                    </a>
+                    @if($form->phone)
                     @php
-                        $sizes = [
-                            'micro' => 'Micro',
-                            'pequena' => 'Pequena',
-                            'media' => 'Média',
-                            'grande' => 'Grande'
-                        ];
+                        $phoneNumber = preg_replace('/\D/', '', $form->phone);
+                        $whatsappMessage = urlencode("Olá! Entrei em contato através do formulário do site GrowFin (Formulário #{$form->id})");
+                        $whatsappUrl = "https://wa.me/55{$phoneNumber}?text={$whatsappMessage}";
                     @endphp
-                    <span class="badge bg-info">{{ $sizes[$form->company_size] ?? ucfirst($form->company_size) }}</span>
+                    <a href="{{ $whatsappUrl }}" target="_blank" class="btn btn-whatsapp">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </a>
+                    @endif
                 </div>
-            </div>
-            @endif
-
-            @if($form->sector)
-            <div class="detail-item">
-                <div class="detail-label">Setor de Atuação</div>
-                <div>
-                    @php
-                        $sectors = [
-                            'servicos' => 'Serviços',
-                            'comercio' => 'Comércio',
-                            'industria' => 'Indústria',
-                            'tecnologia' => 'Tecnologia',
-                            'outro' => 'Outro'
-                        ];
-                    @endphp
-                    <span class="badge bg-secondary">{{ $sectors[$form->sector] ?? ucfirst($form->sector) }}</span>
-                </div>
-            </div>
-            @endif
-
-            @if($form->financial_pain && count($form->financial_pain) > 0)
-            <div class="detail-item">
-                <div class="detail-label">Maior Dor no Financeiro</div>
-                <div class="mt-2">
-                    @php
-                        $pains = [
-                            'falta-controle' => 'Falta de controle',
-                            'falta-tempo' => 'Falta de tempo',
-                            'falta-previsibilidade' => 'Falta de previsibilidade',
-                            'retrabalho-operacional' => 'Retrabalho operacional',
-                            'inadimplencia' => 'Inadimplência',
-                            'desorganizacao' => 'Desorganização',
-                            'multas-juros' => 'Pagamento de multas e juros por atraso'
-                        ];
-                    @endphp
-                    @foreach($form->financial_pain as $pain)
-                        <span class="badge bg-warning text-dark me-1 mb-1">
-                            {{ $pains[$pain] ?? $pain }}
-                        </span>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            @if($form->financial_areas && count($form->financial_areas) > 0)
-            <div class="detail-item">
-                <div class="detail-label">Áreas Financeiras que Precisa de Ajuda</div>
-                <div class="mt-2">
-                    @php
-                        $areas = [
-                            'contas-pagar' => 'Contas a pagar',
-                            'contas-receber' => 'Contas a receber',
-                            'conciliacao-bancaria' => 'Conciliação bancária',
-                            'fluxo-caixa' => 'Fluxo de caixa',
-                            'previsao-financeira' => 'Previsão financeira'
-                        ];
-                    @endphp
-                    @foreach($form->financial_areas as $area)
-                        <span class="badge bg-success me-1 mb-1">
-                            {{ $areas[$area] ?? $area }}
-                        </span>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            @if($form->cashflow_predictability)
-            <div class="detail-item">
-                <div class="detail-label">Previsibilidade de Fluxo de Caixa (30 dias)</div>
-                <div>
-                    @php
-                        $predictability = [
-                            'sim' => 'Sim',
-                            'parcial' => 'Parcial',
-                            'nao' => 'Não'
-                        ];
-                    @endphp
-                    <span class="badge bg-primary">{{ $predictability[$form->cashflow_predictability] ?? ucfirst($form->cashflow_predictability) }}</span>
-                </div>
-            </div>
-            @endif
-
-            @if($form->urgency_level)
-            <div class="detail-item">
-                <div class="detail-label">Nível de Urgência</div>
-                <div>
-                    @php
-                        $urgencyLabels = [
-                            'urgente' => 'Preciso resolver urgente',
-                            '30-dias' => 'Quero resolver nos próximos 30 dias',
-                            'avaliando' => 'Estou avaliando opções'
-                        ];
-                        $urgencyColors = [
-                            'urgente' => 'danger',
-                            '30-dias' => 'warning',
-                            'avaliando' => 'secondary'
-                        ];
-                    @endphp
-                    <span class="badge bg-{{ $urgencyColors[$form->urgency_level] ?? 'secondary' }}">
-                        {{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level) }}
-                    </span>
-                </div>
-            </div>
-            @endif
-
-            @if($form->message)
-            <div class="detail-item">
-                <div class="detail-label">Mensagem</div>
-                <div class="mt-2 p-3 bg-light rounded">
-                    {{ $form->message }}
-                </div>
-            </div>
-            @endif
-
-            <div class="detail-item">
-                <div class="detail-label">Data de Envio</div>
-                <div>{{ $form->created_at->format('d/m/Y H:i:s') }}</div>
-            </div>
-
-            <div class="mt-4">
-                <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Voltar para Lista
-                </a>
-            </div>
+            </form>
         </div>
     </div>
 
