@@ -11,13 +11,22 @@ class Form extends Model
 
     protected $fillable = [
         'name',
+        'lastname',
         'email',
         'phone',
+        'company_size',
+        'sector',
+        'financial_pain',
+        'financial_areas',
+        'cashflow_predictability',
+        'urgency_level',
         'type',
         'message',
     ];
 
     protected $casts = [
+        'financial_pain' => 'array',
+        'financial_areas' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

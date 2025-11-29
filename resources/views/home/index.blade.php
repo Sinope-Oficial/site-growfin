@@ -695,55 +695,72 @@
                   <p>Comece a otimizar a gestão financeira da sua empresa hoje mesmo</p>
                 </div>
 
-                <form method="post" class="php-email-form" id="quote-form">
+                <form method="post" action="javascript:void(0);" class="php-email-form" id="quote-form" novalidate>
                   @csrf
                   <div class="row g-3">
                     <!-- 1. Nome -->
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label class="form-label">Qual o seu nome?</label>
-                        <input type="text" name="name" class="form-control" placeholder="Seu Nome" required>
+                        <label class="form-label">Qual o seu nome? <span class="text-danger">*</span></label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Seu Nome" required>
+                        <div class="invalid-feedback" id="name-error" style="display: none;">
+                          Por favor, informe seu nome.
+                        </div>
                       </div>
                     </div>
                     <!-- 2. Sobrenome -->
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label class="form-label">Qual o seu sobrenome?</label>
-                        <input type="text" name="lastname" class="form-control" placeholder="Seu Sobrenome" required>
+                        <label class="form-label">Qual o seu sobrenome? <span class="text-danger">*</span></label>
+                        <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Seu Sobrenome" required>
+                        <div class="invalid-feedback" id="lastname-error" style="display: none;">
+                          Por favor, informe seu sobrenome.
+                        </div>
                       </div>
                     </div>
                     <!-- 3. Telefone -->
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="form-label">Qual o seu número de telefone?</label>
-                        <input type="tel" name="phone" class="form-control" placeholder="Telefone" required>
+                        <label class="form-label">Qual o seu número de telefone? <span class="text-danger">*</span></label>
+                        <input type="tel" name="phone" id="phone" class="form-control" placeholder="(00) 00000-0000" maxlength="15" required>
+                        {{-- <small class="text-muted">Formato: (00) 00000-0000 (apenas celular com 11 dígitos)</small> --}}
+                        <div class="invalid-feedback" id="phone-error" style="display: none;">
+                          Por favor, digite um número de celular válido com 11 dígitos.
+                        </div>
                       </div>
                     </div>
                     <!-- 4. Email -->
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="form-label">Qual o seu endereço de e-mail?</label>
-                        <input type="email" name="email" class="form-control" placeholder="Seu Email" required>
+                        <label class="form-label">Qual o seu endereço de e-mail? <span class="text-danger">*</span></label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="seu@email.com" required>
+                        {{-- <small class="text-muted">Digite um email válido (exemplo: nome@dominio.com)</small> --}}
+                        <div class="invalid-feedback" id="email-error" style="display: none;">
+                          Por favor, digite um endereço de email válido.
+                        </div>
                       </div>
                     </div>
                     <!-- 5. Tamanho da Empresa -->
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="form-label">Qual o tamanho da sua empresa?</label>
-                        <select name="company_size" class="form-control" required>
+                        <label class="form-label">Qual o tamanho da sua empresa? <span class="text-danger">*</span></label>
+                        <select name="company_size" id="company_size" class="form-control" required>
                           <option value="">Selecione uma opção</option>
                           <option value="micro">Micro</option>
                           <option value="pequena">Pequena</option>
                           <option value="media">Média</option>
                           <option value="grande">Grande</option>
                         </select>
+                        <div class="invalid-feedback" id="company_size-error" style="display: none;">
+                          Por favor, selecione o tamanho da sua empresa.
+                        </div>
                       </div>
                     </div>
                     <!-- 6. Setor de Atuação -->
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="form-label">Qual o seu setor de atuação?</label>
-                        <select name="sector" class="form-control" required>
+                        <label class="form-label">Qual o seu setor de atuação? <span class="text-danger">*</span></label>
+                        <select name="sector" id="sector" class="form-control" required>
                           <option value="">Selecione uma opção</option>
                           <option value="servicos">Serviços</option>
                           <option value="comercio">Comércio</option>
@@ -751,12 +768,18 @@
                           <option value="tecnologia">Tecnologia</option>
                           <option value="outro">Outro</option>
                         </select>
+                        <div class="invalid-feedback" id="sector-error" style="display: none;">
+                          Por favor, selecione o seu setor de atuação.
+                        </div>
                       </div>
                     </div>
                     <!-- 7. Maior Dor no Financeiro (Checklist) -->
                     <div class="col-12">
-                      <div class="form-group">
+                      <div class="form-group" id="financial_pain-group">
                         <label class="form-label">Qual é a maior dor hoje no seu financeiro?</label>
+                        <div class="invalid-feedback" id="financial_pain-error" style="display: none; margin-bottom: 0.5rem;">
+                          Por favor, selecione pelo menos uma opção.
+                        </div>
                         <div class="checkbox-group row g-2">
                           <div class="col-md-6">
                             <div class="form-check checkbox-square">
@@ -805,8 +828,11 @@
                     </div>
                     <!-- 8. Áreas Financeiras que Precisa de Ajuda (Checklist) -->
                     <div class="col-12">
-                      <div class="form-group">
+                      <div class="form-group" id="financial_areas-group">
                         <label class="form-label">Quais áreas financeiras você precisa de ajuda?</label>
+                        <div class="invalid-feedback" id="financial_areas-error" style="display: none; margin-bottom: 0.5rem;">
+                          Por favor, selecione pelo menos uma opção.
+                        </div>
                         <div class="checkbox-group row g-2">
                           <div class="col-md-6">
                             <div class="form-check checkbox-square">
@@ -844,25 +870,31 @@
                     <!-- 9. Previsibilidade de Fluxo de Caixa -->
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="form-label">Você possui previsibilidade de fluxo de caixa dos próximos 30 dias?</label>
-                        <select name="cashflow_predictability" class="form-control" required>
+                        <label class="form-label">Você possui previsibilidade de fluxo de caixa dos próximos 30 dias? <span class="text-danger">*</span></label>
+                        <select name="cashflow_predictability" id="cashflow_predictability" class="form-control" required>
                           <option value="">Selecione uma opção</option>
                           <option value="sim">Sim</option>
                           <option value="parcial">Parcial</option>
                           <option value="nao">Não</option>
                         </select>
+                        <div class="invalid-feedback" id="cashflow_predictability-error" style="display: none;">
+                          Por favor, selecione uma opção.
+                        </div>
                       </div>
                     </div>
                     <!-- 10. Nível de Urgência -->
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="form-label">Em que nível você considera a urgência de organizar seu financeiro?</label>
-                        <select name="urgency_level" class="form-control" required>
+                        <label class="form-label">Em que nível você considera a urgência de organizar seu financeiro? <span class="text-danger">*</span></label>
+                        <select name="urgency_level" id="urgency_level" class="form-control" required>
                           <option value="">Selecione uma opção</option>
                           <option value="urgente">Preciso resolver urgente</option>
                           <option value="30-dias">Quero resolver nos próximos 30 dias</option>
                           <option value="avaliando">Estou avaliando opções</option>
                         </select>
+                        <div class="invalid-feedback" id="urgency_level-error" style="display: none;">
+                          Por favor, selecione uma opção.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1071,51 +1103,479 @@
 .checkbox-group .col-md-6 .form-check {
   width: 100%;
 }
+
+/* Estilos para validação de email */
+.form-control.is-invalid {
+  border-color: #dc3545;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6 .4.4.4-.4m0 4.8-.4-.4-.4.4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.is-invalid:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+.form-group small.text-muted {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+.form-control.is-invalid ~ .invalid-feedback,
+select.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+.form-group.has-error {
+  border-left: 3px solid #dc3545;
+  padding-left: 0.5rem;
+}
+
+.form-group.has-error .form-label {
+  color: #dc3545;
+}
 </style>
 @endsection
 
 @section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+// Desabilitar validação da biblioteca php-email-form para este formulário
+(function() {
   const form = document.querySelector('form#quote-form');
   if (form) {
+    // Remover qualquer listener da biblioteca
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+  }
+})();
+
+// Função para aplicar máscara de celular (apenas 11 dígitos)
+function maskPhone(value) {
+  // Remove tudo que não é dígito
+  value = value.replace(/\D/g, '');
+  
+  // Limita a 11 dígitos (celular brasileiro)
+  if (value.length > 11) {
+    value = value.substring(0, 11);
+  }
+  
+  // Aplica a máscara de celular: (00) 00000-0000
+  if (value.length <= 2) {
+    value = value.replace(/^(\d{0,2})/, '($1');
+  } else if (value.length <= 7) {
+    value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+  } else {
+    value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+  }
+  
+  return value;
+}
+
+// Função para validar celular (11 dígitos)
+function validatePhone(phone) {
+  const digits = phone.replace(/\D/g, '');
+  return digits.length === 11 && /^[1-9]\d{10}$/.test(digits);
+}
+
+// Função para validar email com regex mais robusta
+function validateEmail(email) {
+  // Regex mais completa para validação de email
+  const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return re.test(email) && email.length <= 254;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Aplicar máscara de celular
+  const phoneInput = document.getElementById('phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function(e) {
+      const value = e.target.value;
+      e.target.value = maskPhone(value);
+      
+      // Validação em tempo real
+      const phoneError = document.getElementById('phone-error');
+      if (value.length > 0) {
+        const digits = value.replace(/\D/g, '');
+        if (digits.length > 0 && digits.length < 11) {
+          e.target.classList.add('is-invalid');
+          if (phoneError) phoneError.style.display = 'block';
+        } else if (digits.length === 11) {
+          e.target.classList.remove('is-invalid');
+          if (phoneError) phoneError.style.display = 'none';
+        }
+      } else {
+        e.target.classList.remove('is-invalid');
+        if (phoneError) phoneError.style.display = 'none';
+      }
+    });
+    
+    phoneInput.addEventListener('blur', function(e) {
+      const value = e.target.value;
+      const phoneError = document.getElementById('phone-error');
+      if (!validatePhone(value)) {
+        e.target.classList.add('is-invalid');
+        if (phoneError) phoneError.style.display = 'block';
+        e.target.setCustomValidity('Por favor, digite um número de celular válido com 11 dígitos.');
+      } else {
+        e.target.classList.remove('is-invalid');
+        if (phoneError) phoneError.style.display = 'none';
+        e.target.setCustomValidity('');
+      }
+    });
+    
+    phoneInput.addEventListener('keydown', function(e) {
+      // Permite backspace, delete, tab, escape, enter
+      if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+        // Permite Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+        (e.keyCode === 65 && e.ctrlKey === true) ||
+        (e.keyCode === 67 && e.ctrlKey === true) ||
+        (e.keyCode === 86 && e.ctrlKey === true) ||
+        (e.keyCode === 88 && e.ctrlKey === true) ||
+        // Permite home, end, left, right
+        (e.keyCode >= 35 && e.keyCode <= 39)) {
+        return;
+      }
+      // Garante que é um número
+      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+      }
+    });
+    
+    phoneInput.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const paste = (e.clipboardData || window.clipboardData).getData('text');
+      const masked = maskPhone(paste);
+      e.target.value = masked;
+      // Dispara evento input para validação
+      e.target.dispatchEvent(new Event('input'));
+    });
+  }
+  
+  // Remover erros quando o usuário começar a preencher
+  const requiredInputs = ['name', 'lastname', 'company_size', 'sector', 'cashflow_predictability', 'urgency_level'];
+  requiredInputs.forEach(inputId => {
+    const input = document.getElementById(inputId);
+    if (input) {
+      input.addEventListener('input', function() {
+        if (this.classList.contains('is-invalid')) {
+          this.classList.remove('is-invalid');
+          const error = document.getElementById(inputId + '-error');
+          if (error) error.style.display = 'none';
+        }
+      });
+      input.addEventListener('change', function() {
+        if (this.classList.contains('is-invalid')) {
+          this.classList.remove('is-invalid');
+          const error = document.getElementById(inputId + '-error');
+          if (error) error.style.display = 'none';
+        }
+      });
+    }
+  });
+  
+  // Remover erros dos checkboxes quando selecionados
+  const financialPainCheckboxes = document.querySelectorAll('input[name="financial_pain[]"]');
+  financialPainCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const group = document.getElementById('financial_pain-group');
+      const error = document.getElementById('financial_pain-error');
+      if (group && group.classList.contains('has-error')) {
+        group.classList.remove('has-error');
+        if (error) error.style.display = 'none';
+      }
+    });
+  });
+  
+  const financialAreasCheckboxes = document.querySelectorAll('input[name="financial_areas[]"]');
+  financialAreasCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const group = document.getElementById('financial_areas-group');
+      const error = document.getElementById('financial_areas-error');
+      if (group && group.classList.contains('has-error')) {
+        group.classList.remove('has-error');
+        if (error) error.style.display = 'none';
+      }
+    });
+  });
+  
+  // Validação de email em tempo real
+  const emailInput = document.getElementById('email');
+  if (emailInput) {
+    emailInput.addEventListener('blur', function(e) {
+      const email = e.target.value.trim();
+      const emailError = document.getElementById('email-error');
+      if (email && !validateEmail(email)) {
+        e.target.classList.add('is-invalid');
+        if (emailError) emailError.style.display = 'block';
+        e.target.setCustomValidity('Por favor, digite um endereço de email válido.');
+      } else {
+        e.target.classList.remove('is-invalid');
+        if (emailError) emailError.style.display = 'none';
+        e.target.setCustomValidity('');
+      }
+    });
+    
+    emailInput.addEventListener('input', function(e) {
+      const email = e.target.value.trim();
+      const emailError = document.getElementById('email-error');
+      if (e.target.classList.contains('is-invalid') && validateEmail(email)) {
+        e.target.classList.remove('is-invalid');
+        if (emailError) emailError.style.display = 'none';
+        e.target.setCustomValidity('');
+      } else if (email.length > 0 && !validateEmail(email)) {
+        e.target.classList.add('is-invalid');
+        if (emailError) emailError.style.display = 'block';
+      }
+    });
+  }
+  
+  const form = document.querySelector('form#quote-form');
+  if (form) {
+    // Prevenir validação da biblioteca php-email-form
+    form.setAttribute('data-php-email-form', 'false');
+    form.setAttribute('data-form-type', 'other');
+    
+    // Função para validar todos os campos obrigatórios
+    function validateAllFields() {
+      let isValid = true;
+      let firstErrorField = null;
+      
+      // Limpar erros anteriores
+      form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+      form.querySelectorAll('.invalid-feedback').forEach(el => el.style.display = 'none');
+      
+      // 1. Nome
+      const nameInput = document.getElementById('name');
+      if (!nameInput || !nameInput.value.trim()) {
+        isValid = false;
+        nameInput.classList.add('is-invalid');
+        const nameError = document.getElementById('name-error');
+        if (nameError) nameError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = nameInput;
+      }
+      
+      // 2. Sobrenome
+      const lastnameInput = document.getElementById('lastname');
+      if (!lastnameInput || !lastnameInput.value.trim()) {
+        isValid = false;
+        lastnameInput.classList.add('is-invalid');
+        const lastnameError = document.getElementById('lastname-error');
+        if (lastnameError) lastnameError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = lastnameInput;
+      }
+      
+      // 3. Telefone
+      const phoneInput = document.getElementById('phone');
+      if (!phoneInput || !validatePhone(phoneInput.value)) {
+        isValid = false;
+        phoneInput.classList.add('is-invalid');
+        const phoneError = document.getElementById('phone-error');
+        if (phoneError) phoneError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = phoneInput;
+      }
+      
+      // 4. Email
+      const emailInput = document.getElementById('email');
+      if (!emailInput || !validateEmail(emailInput.value.trim())) {
+        isValid = false;
+        emailInput.classList.add('is-invalid');
+        const emailError = document.getElementById('email-error');
+        if (emailError) emailError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = emailInput;
+      }
+      
+      // 5. Tamanho da Empresa
+      const companySizeInput = document.getElementById('company_size');
+      if (!companySizeInput || !companySizeInput.value) {
+        isValid = false;
+        companySizeInput.classList.add('is-invalid');
+        const companySizeError = document.getElementById('company_size-error');
+        if (companySizeError) companySizeError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = companySizeInput;
+      }
+      
+      // 6. Setor
+      const sectorInput = document.getElementById('sector');
+      if (!sectorInput || !sectorInput.value) {
+        isValid = false;
+        sectorInput.classList.add('is-invalid');
+        const sectorError = document.getElementById('sector-error');
+        if (sectorError) sectorError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = sectorInput;
+      }
+      
+      // 7. Maior Dor no Financeiro (pelo menos uma opção)
+      const financialPainCheckboxes = form.querySelectorAll('input[name="financial_pain[]"]:checked');
+      if (financialPainCheckboxes.length === 0) {
+        isValid = false;
+        const financialPainGroup = document.getElementById('financial_pain-group');
+        if (financialPainGroup) financialPainGroup.classList.add('has-error');
+        const financialPainError = document.getElementById('financial_pain-error');
+        if (financialPainError) financialPainError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = financialPainGroup;
+      }
+      
+      // 8. Áreas Financeiras (pelo menos uma opção)
+      const financialAreasCheckboxes = form.querySelectorAll('input[name="financial_areas[]"]:checked');
+      if (financialAreasCheckboxes.length === 0) {
+        isValid = false;
+        const financialAreasGroup = document.getElementById('financial_areas-group');
+        if (financialAreasGroup) financialAreasGroup.classList.add('has-error');
+        const financialAreasError = document.getElementById('financial_areas-error');
+        if (financialAreasError) financialAreasError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = financialAreasGroup;
+      }
+      
+      // 9. Previsibilidade de Fluxo de Caixa
+      const cashflowInput = document.getElementById('cashflow_predictability');
+      if (!cashflowInput || !cashflowInput.value) {
+        isValid = false;
+        cashflowInput.classList.add('is-invalid');
+        const cashflowError = document.getElementById('cashflow_predictability-error');
+        if (cashflowError) cashflowError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = cashflowInput;
+      }
+      
+      // 10. Nível de Urgência
+      const urgencyInput = document.getElementById('urgency_level');
+      if (!urgencyInput || !urgencyInput.value) {
+        isValid = false;
+        urgencyInput.classList.add('is-invalid');
+        const urgencyError = document.getElementById('urgency_level-error');
+        if (urgencyError) urgencyError.style.display = 'block';
+        if (!firstErrorField) firstErrorField = urgencyInput;
+      }
+      
+      return { isValid, firstErrorField };
+    }
+    
+    // Interceptar antes da biblioteca processar
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      e.stopImmediatePropagation();
       
-      const formData = new FormData(form);
       const loading = form.querySelector('.loading');
       const errorMessage = form.querySelector('.error-message');
       const sentMessage = form.querySelector('.sent-message');
       
+      // Validar todos os campos
+      const validation = validateAllFields();
+      
+      if (!validation.isValid) {
+        // Ocultar mensagens de sucesso
+        if (loading) loading.style.display = 'none';
+        if (sentMessage) sentMessage.style.display = 'none';
+        
+        // Mostrar mensagem de erro geral
+        if (errorMessage) {
+          errorMessage.innerHTML = 'Por favor, preencha todos os campos obrigatórios indicados.';
+          errorMessage.style.display = 'block';
+        }
+        
+        // Scroll para o primeiro campo com erro
+        if (validation.firstErrorField) {
+          validation.firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Se for um input/select, focar nele
+          if (validation.firstErrorField.tagName === 'INPUT' || validation.firstErrorField.tagName === 'SELECT') {
+            setTimeout(() => validation.firstErrorField.focus(), 300);
+          }
+        }
+        
+        return;
+      }
+      
+      // Limpar telefone antes de enviar (remover máscara, manter apenas números)
+      const phoneInput = document.getElementById('phone');
+      if (phoneInput) {
+        const phoneValue = phoneInput.value.replace(/\D/g, '');
+        phoneInput.value = phoneValue;
+      }
+      
+      const formData = new FormData(form);
+      
+      // Obter o token CSRF do input hidden do formulário
+      const csrfToken = form.querySelector('input[name="_token"]');
+      if (!csrfToken) {
+        console.error('Token CSRF não encontrado no formulário');
+        if (errorMessage) {
+          errorMessage.innerHTML = 'Erro: Token de segurança não encontrado. Por favor, recarregue a página.';
+          errorMessage.style.display = 'block';
+        }
+        return;
+      }
+      
       // Reset messages
-      loading.style.display = 'block';
-      errorMessage.style.display = 'none';
-      sentMessage.style.display = 'none';
+      if (loading) loading.style.display = 'block';
+      if (errorMessage) {
+        errorMessage.style.display = 'none';
+        errorMessage.innerHTML = '';
+      }
+      if (sentMessage) sentMessage.style.display = 'none';
       
       fetch('{{ route("form.store") }}', {
         method: 'POST',
         body: formData,
         headers: {
-          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          'X-CSRF-TOKEN': csrfToken.value,
+          'X-Requested-With': 'XMLHttpRequest',
           'Accept': 'application/json'
-        }
+        },
+        credentials: 'same-origin'
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(data => {
+            // Tratamento específico para erro de CSRF
+            if (response.status === 419 || data.message?.includes('CSRF') || data.message?.includes('token')) {
+              throw new Error('Sua sessão expirou. Por favor, recarregue a página e tente novamente.');
+            }
+            throw new Error(data.message || 'Erro ao processar formulário');
+          }).catch(err => {
+            if (err.message) throw err;
+            throw new Error('Erro ao processar formulário');
+          });
+        }
+        return response.json();
+      })
       .then(data => {
-        loading.style.display = 'none';
+        if (loading) loading.style.display = 'none';
         if (data.success) {
-          sentMessage.style.display = 'block';
+          if (sentMessage) sentMessage.style.display = 'block';
           form.reset();
+          // Scroll para a mensagem de sucesso
+          if (sentMessage) {
+            sentMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
         } else {
-          errorMessage.innerHTML = data.message || 'Ocorreu um erro ao enviar o formulário.';
-          errorMessage.style.display = 'block';
+          if (errorMessage) {
+            errorMessage.innerHTML = data.message || 'Ocorreu um erro ao enviar o formulário.';
+            errorMessage.style.display = 'block';
+          }
+          if (loading) loading.style.display = 'none';
         }
       })
       .catch(error => {
-        loading.style.display = 'none';
-        errorMessage.innerHTML = 'Ocorreu um erro ao enviar o formulário. Tente novamente.';
-        errorMessage.style.display = 'block';
+        if (loading) loading.style.display = 'none';
+        if (errorMessage) {
+          errorMessage.innerHTML = error.message || 'Ocorreu um erro ao enviar o formulário. Tente novamente.';
+          errorMessage.style.display = 'block';
+        }
+        console.error('Erro no formulário:', error);
       });
+      
+      return false;
     });
   }
 });

@@ -101,10 +101,12 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nome</th>
+                            <th>Nome e Sobrenome</th>
                             <th>Email</th>
                             <th>Telefone</th>
-                            <th>Tipo de Serviço</th>
+                            <th>Tamanho Empresa</th>
+                            <th>Setor</th>
+                            <th>Urgência</th>
                             <th>Data</th>
                             <th>Ações</th>
                         </tr>
@@ -113,13 +115,47 @@
                         @forelse($forms as $form)
                             <tr>
                                 <td>{{ $form->id }}</td>
-                                <td>{{ $form->name }}</td>
+                                <td>{{ $form->name }} {{ $form->lastname ?? '' }}</td>
                                 <td>{{ $form->email }}</td>
                                 <td>{{ $form->phone ?? '-' }}</td>
                                 <td>
-                                    <span class="badge bg-primary">
-                                        {{ $form->type ?? 'Não especificado' }}
-                                    </span>
+                                    @if($form->company_size)
+                                        <span class="badge bg-info">
+                                            {{ ucfirst($form->company_size) }}
+                                        </span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($form->sector)
+                                        <span class="badge bg-secondary">
+                                            {{ ucfirst($form->sector) }}
+                                        </span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($form->urgency_level)
+                                        @php
+                                            $urgencyLabels = [
+                                                'urgente' => 'Urgente',
+                                                '30-dias' => '30 dias',
+                                                'avaliando' => 'Avaliando'
+                                            ];
+                                            $urgencyColors = [
+                                                'urgente' => 'danger',
+                                                '30-dias' => 'warning',
+                                                'avaliando' => 'secondary'
+                                            ];
+                                        @endphp
+                                        <span class="badge bg-{{ $urgencyColors[$form->urgency_level] ?? 'secondary' }}">
+                                            {{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level) }}
+                                        </span>
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                                 <td>{{ $form->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
@@ -131,7 +167,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">
+                                <td colspan="9" class="text-center text-muted py-4">
                                     Nenhum formulário encontrado.
                                 </td>
                             </tr>
