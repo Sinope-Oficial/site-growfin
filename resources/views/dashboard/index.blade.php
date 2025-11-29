@@ -7,11 +7,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
+        :root {
+            --accent-color: #F27920;
+            --heading-color: #102a49;
+            --default-color: #333333;
+        }
         body {
             background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
         }
         .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, #d66a1a 100%);
+            box-shadow: 0 2px 10px rgba(242, 121, 32, 0.3);
+        }
+        h2 {
+            color: var(--heading-color);
+            font-weight: 700;
         }
         .stat-card {
             background: white;
@@ -19,16 +30,38 @@
             padding: 1.5rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 1.5rem;
+            border-top: 3px solid var(--accent-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(242, 121, 32, 0.2);
         }
         .stat-card .icon {
             font-size: 2.5rem;
-            color: #667eea;
+            color: var(--accent-color);
+        }
+        .stat-card h3 {
+            color: var(--heading-color);
+            font-weight: 700;
         }
         .table-card {
             background: white;
             border-radius: 10px;
             padding: 1.5rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-top: 3px solid var(--accent-color);
+        }
+        .table thead {
+            background-color: rgba(242, 121, 32, 0.1);
+        }
+        .table thead th {
+            color: var(--heading-color);
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        .table tbody tr:hover {
+            background-color: rgba(242, 121, 32, 0.05);
         }
         .chart-card {
             background: white;
@@ -36,16 +69,51 @@
             padding: 1.5rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 1.5rem;
+            border-top: 3px solid var(--accent-color);
         }
         .chart-card h4 {
             margin-bottom: 1rem;
-            color: #333;
+            color: var(--heading-color);
             font-size: 1.25rem;
             font-weight: 600;
+        }
+        .chart-card h4 i {
+            color: var(--accent-color);
+            margin-right: 0.5rem;
         }
         .chart-container {
             position: relative;
             height: 300px;
+        }
+        .badge.bg-info {
+            background-color: rgba(242, 121, 32, 0.15) !important;
+            color: var(--accent-color) !important;
+            border: 1px solid rgba(242, 121, 32, 0.3);
+        }
+        .badge.bg-secondary {
+            background-color: rgba(16, 42, 73, 0.15) !important;
+            color: var(--heading-color) !important;
+            border: 1px solid rgba(16, 42, 73, 0.3);
+        }
+        .btn-outline-primary {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+        .page-link {
+            color: var(--accent-color);
+        }
+        .page-link:hover {
+            color: #d66a1a;
+            background-color: rgba(242, 121, 32, 0.1);
+        }
+        .page-item.active .page-link {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
         }
     </style>
 </head>
@@ -181,15 +249,20 @@
                                                 '30-dias' => '30 dias',
                                                 'avaliando' => 'Avaliando'
                                             ];
-                                            $urgencyColors = [
-                                                'urgente' => 'danger',
-                                                '30-dias' => 'warning',
-                                                'avaliando' => 'secondary'
-                                            ];
                                         @endphp
-                                        <span class="badge bg-{{ $urgencyColors[$form->urgency_level] ?? 'secondary' }}">
-                                            {{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level) }}
-                                        </span>
+                                        @if($form->urgency_level == 'urgente')
+                                            <span class="badge" style="background-color: #dc3545; color: white;">
+                                                {{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level) }}
+                                            </span>
+                                        @elseif($form->urgency_level == '30-dias')
+                                            <span class="badge" style="background-color: rgba(242, 121, 32, 0.15); color: #F27920; border: 1px solid rgba(242, 121, 32, 0.3);">
+                                                {{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level) }}
+                                            </span>
+                                        @else
+                                            <span class="badge" style="background-color: rgba(16, 42, 73, 0.15); color: #102a49; border: 1px solid rgba(16, 42, 73, 0.3);">
+                                                {{ $urgencyLabels[$form->urgency_level] ?? ucfirst($form->urgency_level) }}
+                                            </span>
+                                        @endif
                                     @else
                                         -
                                     @endif
@@ -236,14 +309,14 @@
             'outro': 'Outro'
         };
 
-        // Cores para o gráfico de pizza
+        // Cores para o gráfico de pizza - usando cores do site
         const pieColors = [
             '#F27920', // Laranja padrão do site
-            '#667eea',
-            '#764ba2',
-            '#f093fb',
-            '#4facfe',
-            '#00f2fe'
+            '#102a49', // Azul escuro (heading color)
+            '#d66a1a', // Laranja escuro
+            '#e06a1a', // Laranja médio
+            '#6c757d', // Cinza Bootstrap
+            '#0dcaf0'  // Azul claro Bootstrap
         ];
 
         // Gráfico de Pizza - Distribuição por Setor
