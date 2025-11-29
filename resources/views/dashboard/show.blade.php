@@ -241,16 +241,21 @@
 </head>
 <body>
     <nav class="navbar navbar-dark">
-        <div class="container-fluid">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
             <a class="navbar-brand" href="{{ route('dashboard') }}">
                 <i class="bi bi-arrow-left"></i> Voltar
             </a>
-            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-outline-light">
-                    <i class="bi bi-box-arrow-right"></i> Sair
-                </button>
-            </form>
+            <div class="d-flex gap-2">
+                <a href="{{ route('dashboard.password.edit') }}" class="btn btn-outline-light">
+                    <i class="bi bi-shield-lock"></i> Alterar Senha
+                </a>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-light">
+                        <i class="bi bi-box-arrow-right"></i> Sair
+                    </button>
+                </form>
+            </div>
         </div>
     </nav>
 

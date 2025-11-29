@@ -133,17 +133,22 @@
 </head>
 <body>
     <nav class="navbar navbar-dark">
-        <div class="container-fluid">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('assets/img/logo.jpeg') }}" alt="GrowFin" height="40" class="me-2">
                 GrowFin - Dashboard
             </a>
-            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-outline-light">
-                    <i class="bi bi-box-arrow-right"></i> Sair
-                </button>
-            </form>
+            <div class="d-flex gap-2">
+                <a href="{{ route('dashboard.password.edit') }}" class="btn btn-outline-light">
+                    <i class="bi bi-shield-lock"></i> Alterar Senha
+                </a>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-light">
+                        <i class="bi bi-box-arrow-right"></i> Sair
+                    </button>
+                </form>
+            </div>
         </div>
     </nav>
 
@@ -227,8 +232,19 @@
 
         <!-- Forms Table -->
         <div class="table-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0" style="color: var(--heading-color); font-weight: 600;">Lista de Formulários</h5>
+                <div class="btn-group" role="group" aria-label="Exportar dados">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="exportTableToCSV()">
+                        <i class="bi bi-filetype-csv"></i> CSV
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="exportTableToPDF()">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </button>
+                </div>
+            </div>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table id="formsTable" class="table table-hover">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -360,184 +376,6 @@
         </div>
     </div>
 
-    <!-- Modal de Edição -->
-    <div class="modal fade" id="editFormModal" tabindex="-1" aria-labelledby="editFormModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, var(--accent-color) 0%, #d66a1a 100%); color: white;">
-                    <h5 class="modal-title" id="editFormModalLabel">
-                        <i class="bi bi-pencil"></i> Editar Formulário
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="editFormForm" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Nome <span class="text-danger">*</span></label>
-                                <input type="text" name="name" id="edit-name" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Sobrenome <span class="text-danger">*</span></label>
-                                <input type="text" name="lastname" id="edit-lastname" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" name="email" id="edit-email" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Telefone <span class="text-danger">*</span></label>
-                                <input type="tel" name="phone" id="edit-phone" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tamanho da Empresa <span class="text-danger">*</span></label>
-                                <select name="company_size" id="edit-company_size" class="form-control" required>
-                                    <option value="">Selecione</option>
-                                    <option value="micro">Micro</option>
-                                    <option value="pequena">Pequena</option>
-                                    <option value="media">Média</option>
-                                    <option value="grande">Grande</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Setor <span class="text-danger">*</span></label>
-                                <select name="sector" id="edit-sector" class="form-control" required>
-                                    <option value="">Selecione</option>
-                                    <option value="servicos">Serviços</option>
-                                    <option value="comercio">Comércio</option>
-                                    <option value="industria">Indústria</option>
-                                    <option value="tecnologia">Tecnologia</option>
-                                    <option value="outro">Outro</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Maior Dor no Financeiro</label>
-                                <div class="row g-2">
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_pain[]" value="falta-controle" id="edit-pain-controle">
-                                            <label class="form-check-label" for="edit-pain-controle">Falta de controle</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_pain[]" value="falta-tempo" id="edit-pain-tempo">
-                                            <label class="form-check-label" for="edit-pain-tempo">Falta de tempo</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_pain[]" value="falta-previsibilidade" id="edit-pain-previsibilidade">
-                                            <label class="form-check-label" for="edit-pain-previsibilidade">Falta de previsibilidade</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_pain[]" value="retrabalho-operacional" id="edit-pain-retrabalho">
-                                            <label class="form-check-label" for="edit-pain-retrabalho">Retrabalho operacional</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_pain[]" value="inadimplencia" id="edit-pain-inadimplencia">
-                                            <label class="form-check-label" for="edit-pain-inadimplencia">Inadimplência</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_pain[]" value="desorganizacao" id="edit-pain-desorganizacao">
-                                            <label class="form-check-label" for="edit-pain-desorganizacao">Desorganização</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_pain[]" value="multas-juros" id="edit-pain-multas">
-                                            <label class="form-check-label" for="edit-pain-multas">Pagamento de multas e juros por atraso</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Áreas Financeiras que Precisa de Ajuda</label>
-                                <div class="row g-2">
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_areas[]" value="contas-pagar" id="edit-area-pagar">
-                                            <label class="form-check-label" for="edit-area-pagar">Contas a pagar</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_areas[]" value="contas-receber" id="edit-area-receber">
-                                            <label class="form-check-label" for="edit-area-receber">Contas a receber</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_areas[]" value="conciliacao-bancaria" id="edit-area-conciliacao">
-                                            <label class="form-check-label" for="edit-area-conciliacao">Conciliação bancária</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_areas[]" value="fluxo-caixa" id="edit-area-fluxo">
-                                            <label class="form-check-label" for="edit-area-fluxo">Fluxo de caixa</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="financial_areas[]" value="previsao-financeira" id="edit-area-previsao">
-                                            <label class="form-check-label" for="edit-area-previsao">Previsão financeira</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Previsibilidade de Fluxo de Caixa <span class="text-danger">*</span></label>
-                                <select name="cashflow_predictability" id="edit-cashflow" class="form-control" required>
-                                    <option value="">Selecione</option>
-                                    <option value="sim">Sim</option>
-                                    <option value="parcial">Parcial</option>
-                                    <option value="nao">Não</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Nível de Urgência <span class="text-danger">*</span></label>
-                                <select name="urgency_level" id="edit-urgency" class="form-control" required>
-                                    <option value="">Selecione</option>
-                                    <option value="urgente">Preciso resolver urgente</option>
-                                    <option value="30-dias">Quero resolver nos próximos 30 dias</option>
-                                    <option value="avaliando">Estou avaliando opções</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Status <span class="text-danger">*</span></label>
-                                <select name="status" id="edit-status" class="form-control" required>
-                                    <option value="">Selecione</option>
-                                    <option value="falta-atender">Falta Atender</option>
-                                    <option value="em-atendimento">Em Atendimento</option>
-                                    <option value="atendido">Atendido</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Observação</label>
-                                <textarea name="message" id="edit-message" class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn" style="background-color: var(--accent-color); color: white;">
-                            <i class="bi bi-check-circle"></i> Salvar Alterações
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal de Confirmação de Exclusão -->
     <div class="modal fade" id="deleteFormModal" tabindex="-1" aria-labelledby="deleteFormModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -569,6 +407,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
+        function downloadFile(filename, content, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportTableToCSV() {
+            window.location.href = '{{ route('dashboard.export.csv') }}';
+        }
+
+        function exportTableToPDF() {
+            window.open('{{ route('dashboard.export.pdf') }}', '_blank');
+        }
+
         // Dados para os gráficos
         const sectorData = @json($sectorData);
         const evolutionData = @json($evolutionData);
@@ -707,61 +563,7 @@
             });
         }
 
-        // Modal de Edição - Preencher dados quando abrir
-        const editFormModal = document.getElementById('editFormModal');
-        if (editFormModal) {
-            editFormModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                const formId = button.getAttribute('data-form-id');
-                const form = document.getElementById('editFormForm');
-                
-                // Atualizar action do form
-                form.action = `/dashboard/forms/${formId}`;
-                
-                // Preencher campos
-                document.getElementById('edit-name').value = button.getAttribute('data-form-name') || '';
-                document.getElementById('edit-lastname').value = button.getAttribute('data-form-lastname') || '';
-                document.getElementById('edit-email').value = button.getAttribute('data-form-email') || '';
-                document.getElementById('edit-phone').value = button.getAttribute('data-form-phone') || '';
-                document.getElementById('edit-company_size').value = button.getAttribute('data-form-company-size') || '';
-                document.getElementById('edit-sector').value = button.getAttribute('data-form-sector') || '';
-                document.getElementById('edit-cashflow').value = button.getAttribute('data-form-cashflow') || '';
-                document.getElementById('edit-urgency').value = button.getAttribute('data-form-urgency') || '';
-                document.getElementById('edit-status').value = button.getAttribute('data-form-status') || 'falta-atender';
-                document.getElementById('edit-message').value = button.getAttribute('data-form-observacao') || '';
-                
-                // Limpar checkboxes
-                document.querySelectorAll('#editFormForm input[type="checkbox"]').forEach(cb => {
-                    cb.checked = false;
-                });
-                
-                // Preencher financial_pain
-                try {
-                    const financialPain = JSON.parse(button.getAttribute('data-form-financial-pain') || '[]');
-                    financialPain.forEach(value => {
-                        const checkbox = document.querySelector(`#editFormForm input[value="${value}"]`);
-                        if (checkbox && checkbox.name === 'financial_pain[]') {
-                            checkbox.checked = true;
-                        }
-                    });
-                } catch (e) {
-                    console.error('Erro ao parsear financial_pain:', e);
-                }
-                
-                // Preencher financial_areas
-                try {
-                    const financialAreas = JSON.parse(button.getAttribute('data-form-financial-areas') || '[]');
-                    financialAreas.forEach(value => {
-                        const checkbox = document.querySelector(`#editFormForm input[value="${value}"]`);
-                        if (checkbox && checkbox.name === 'financial_areas[]') {
-                            checkbox.checked = true;
-                        }
-                    });
-                } catch (e) {
-                    console.error('Erro ao parsear financial_areas:', e);
-                }
-            });
-        }
+        // Modal de Edição foi removido; edição agora acontece em página dedicada.
 
         // Modal de Exclusão - Preencher dados quando abrir
         const deleteFormModal = document.getElementById('deleteFormModal');

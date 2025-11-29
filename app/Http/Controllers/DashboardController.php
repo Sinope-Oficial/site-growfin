@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Form;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {
@@ -65,11 +68,42 @@ class DashboardController extends Controller
     }
 
     /**
+     * Show password edit page.
+     */
+    public function editPassword()
+    {
+        return view('dashboard.password');
+    }
+
+    /**
+     * Update password for authenticated user.
+     */
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'A senha atual está incorreta.')->withInput();
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return back()->with('success', 'Senha atualizada com sucesso!');
+    }
+
+    /**
      * Update a form.
      */
     public function update(Request $request, Form $form)
     {
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -105,6 +139,75 @@ class DashboardController extends Controller
 
         return redirect()->route('dashboard')
             ->with('success', 'Formulário deletado com sucesso!');
+    }
+
+    /**
+     * Export all forms as CSV.
+     */
+    public function exportCsv()
+    {
+        $forms = Form::orderByDesc('created_at')->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="formularios.csv"',
+        ];
+
+        $callback = function () use ($forms) {
+            $output = fopen('php://output', 'w');
+            // Cabeçalho
+            fputcsv($output, [
+                'ID',
+                'Nome',
+                'Sobrenome',
+                'Email',
+                'Telefone',
+                'Tamanho Empresa',
+                'Setor',
+                'Status',
+                'Urgência',
+                'Previsibilidade Fluxo de Caixa',
+                'Dores Financeiras',
+                'Áreas Financeiras',
+                'Observação',
+                'Criado em',
+            ], ';');
+
+            foreach ($forms as $form) {
+                $financialPain = is_array($form->financial_pain) ? implode(' | ', $form->financial_pain) : $form->financial_pain;
+                $financialAreas = is_array($form->financial_areas) ? implode(' | ', $form->financial_areas) : $form->financial_areas;
+
+                fputcsv($output, [
+                    $form->id,
+                    $form->name,
+                    $form->lastname,
+                    $form->email,
+                    $form->phone,
+                    $form->company_size,
+                    $form->sector,
+                    $form->status,
+                    $form->urgency_level,
+                    $form->cashflow_predictability,
+                    $financialPain,
+                    $financialAreas,
+                    $form->message,
+                    optional($form->created_at)->format('d/m/Y H:i'),
+                ], ';');
+            }
+
+            fclose($output);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Export all forms as printable HTML (for PDF).
+     */
+    public function exportPdf()
+    {
+        $forms = Form::orderByDesc('created_at')->get();
+        return view('dashboard.export_pdf', compact('forms'));
     }
 }
 

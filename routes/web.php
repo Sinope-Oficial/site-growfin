@@ -26,9 +26,13 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Protected dashboard routes
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/password', [DashboardController::class, 'editPassword'])->name('dashboard.password.edit');
+    Route::get('/dashboard/export/csv', [DashboardController::class, 'exportCsv'])->name('dashboard.export.csv');
+    Route::get('/dashboard/export/pdf', [DashboardController::class, 'exportPdf'])->name('dashboard.export.pdf');
     Route::get('/dashboard/forms/{form}', [DashboardController::class, 'show'])->name('dashboard.forms.show');
     Route::get('/dashboard/forms/{form}/edit', [DashboardController::class, 'edit'])->name('dashboard.forms.edit');
     Route::put('/dashboard/forms/{form}', [DashboardController::class, 'update'])->name('dashboard.forms.update');
     Route::delete('/dashboard/forms/{form}', [DashboardController::class, 'destroy'])->name('dashboard.forms.destroy');
+    Route::post('/dashboard/password', [DashboardController::class, 'updatePassword'])->name('dashboard.password.update');
 });
 
