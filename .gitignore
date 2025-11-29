@@ -6,6 +6,11 @@
 .env
 .env.backup
 .env.production
+test-db-connection.php
+test-env-credentials.php
+diagnose-db.php
+clear-cache.php
+clear-cache-web.php
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml

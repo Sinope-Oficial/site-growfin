@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Permitir acesso direto a arquivos que existem na raiz (se necessário)
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+    
+    # Permitir acesso direto a diretórios que existem na raiz (se necessário)
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+    
+    # Redirecionar tudo para public/index.php (Laravel)
+    # Exceto se já estiver tentando acessar public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/index.php [L]
+</IfModule>
+
