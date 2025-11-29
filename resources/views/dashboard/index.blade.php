@@ -30,6 +30,23 @@
             padding: 1.5rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .chart-card h4 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
     </style>
 </head>
 <body>
@@ -89,6 +106,26 @@
                             <h3 class="mb-0">{{ Auth::user()->name }}</h3>
                             <p class="text-muted mb-0">Usuário Logado</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="chart-card">
+                    <h4><i class="bi bi-pie-chart"></i> Distribuição por Setor</h4>
+                    <div class="chart-container">
+                        <canvas id="sectorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-card">
+                    <h4><i class="bi bi-graph-up"></i> Evolução de Inscritos (Últimos 30 dias)</h4>
+                    <div class="chart-container">
+                        <canvas id="evolutionChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -184,6 +221,146 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Dados para os gráficos
+        const sectorData = @json($sectorData);
+        const evolutionData = @json($evolutionData);
+
+        // Mapeamento de setores para nomes legíveis
+        const sectorLabels = {
+            'servicos': 'Serviços',
+            'comercio': 'Comércio',
+            'industria': 'Indústria',
+            'tecnologia': 'Tecnologia',
+            'outro': 'Outro'
+        };
+
+        // Cores para o gráfico de pizza
+        const pieColors = [
+            '#F27920', // Laranja padrão do site
+            '#667eea',
+            '#764ba2',
+            '#f093fb',
+            '#4facfe',
+            '#00f2fe'
+        ];
+
+        // Gráfico de Pizza - Distribuição por Setor
+        const sectorCtx = document.getElementById('sectorChart');
+        if (sectorCtx) {
+            const sectorLabelsArray = Object.keys(sectorData).map(key => sectorLabels[key] || key);
+            const sectorValuesArray = Object.values(sectorData);
+
+            new Chart(sectorCtx, {
+                type: 'pie',
+                data: {
+                    labels: sectorLabelsArray,
+                    datasets: [{
+                        data: sectorValuesArray,
+                        backgroundColor: pieColors.slice(0, sectorLabelsArray.length),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return label + ': ' + value + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Gráfico de Evolução Temporal
+        const evolutionCtx = document.getElementById('evolutionChart');
+        if (evolutionCtx) {
+            const evolutionLabels = evolutionData.map(item => item.date);
+            const evolutionValues = evolutionData.map(item => item.count);
+
+            new Chart(evolutionCtx, {
+                type: 'line',
+                data: {
+                    labels: evolutionLabels,
+                    datasets: [{
+                        label: 'Inscritos',
+                        data: evolutionValues,
+                        borderColor: '#F27920',
+                        backgroundColor: 'rgba(242, 121, 32, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointBackgroundColor: '#F27920',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Inscritos: ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                precision: 0
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
 

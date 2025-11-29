@@ -24,7 +24,28 @@ class DashboardController extends Controller
         $totalForms = Form::count();
         $todayForms = Form::whereDate('created_at', today())->count();
 
-        return view('dashboard.index', compact('forms', 'totalForms', 'todayForms'));
+        // Dados para gráfico de pizza (por setor)
+        $sectorData = Form::selectRaw('sector, COUNT(*) as count')
+            ->whereNotNull('sector')
+            ->groupBy('sector')
+            ->get()
+            ->pluck('count', 'sector')
+            ->toArray();
+
+        // Dados para gráfico de evolução temporal (últimos 30 dias)
+        $evolutionData = Form::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->where('created_at', '>=', now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'date' => \Carbon\Carbon::parse($item->date)->format('d/m'),
+                    'count' => $item->count
+                ];
+            });
+
+        return view('dashboard.index', compact('forms', 'totalForms', 'todayForms', 'sectorData', 'evolutionData'));
     }
 
     /**
