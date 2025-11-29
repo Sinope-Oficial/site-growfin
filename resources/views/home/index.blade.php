@@ -698,42 +698,171 @@
                 <form method="post" class="php-email-form" id="quote-form">
                   @csrf
                   <div class="row g-3">
+                    <!-- 1. Nome -->
                     <div class="col-md-6">
                       <div class="form-group">
+                        <label class="form-label">Qual o seu nome?</label>
                         <input type="text" name="name" class="form-control" placeholder="Seu Nome" required>
                       </div>
                     </div>
+                    <!-- 2. Sobrenome -->
                     <div class="col-md-6">
                       <div class="form-group">
+                        <label class="form-label">Qual o seu sobrenome?</label>
+                        <input type="text" name="lastname" class="form-control" placeholder="Seu Sobrenome" required>
+                      </div>
+                    </div>
+                    <!-- 3. Telefone -->
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="form-label">Qual o seu número de telefone?</label>
+                        <input type="tel" name="phone" class="form-control" placeholder="Telefone" required>
+                      </div>
+                    </div>
+                    <!-- 4. Email -->
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="form-label">Qual o seu endereço de e-mail?</label>
                         <input type="email" name="email" class="form-control" placeholder="Seu Email" required>
                       </div>
                     </div>
+                    <!-- 5. Tamanho da Empresa -->
                     <div class="col-12">
                       <div class="form-group">
-                        <input type="tel" name="phone" class="form-control" placeholder="Telefone">
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="form-group">
-                        <select name="type" class="form-control">
-                          <option value="">Selecione o Tipo de Serviço</option>
-                          <option value="bpo-completo">BPO Financeiro Completo</option>
-                          <option value="contas-pagar">Contas a Pagar</option>
-                          <option value="contas-receber">Contas a Receber</option>
-                          <option value="conciliacao-bancaria">Conciliação Bancária</option>
-                          <option value="conciliacao-cartoes">Conciliação de Cartões</option>
-                          <option value="conciliacao-ifood">Conciliação com IFood</option>
-                          <option value="dre-dfc">DRE e DFC</option>
-                          <option value="planejamento">Planejamento e Prospecção Financeira</option>
-                          <option value="emissao">Emissão de NF e Boletos</option>
-                          <option value="outros">Outros Serviços</option>
+                        <label class="form-label">Qual o tamanho da sua empresa?</label>
+                        <select name="company_size" class="form-control" required>
+                          <option value="">Selecione uma opção</option>
+                          <option value="micro">Micro</option>
+                          <option value="pequena">Pequena</option>
+                          <option value="media">Média</option>
+                          <option value="grande">Grande</option>
                         </select>
                       </div>
                     </div>
+                    <!-- 6. Setor de Atuação -->
                     <div class="col-12">
                       <div class="form-group">
-                        <textarea name="message" class="form-control" rows="4" placeholder="Detalhes da sua necessidade"
-                          required></textarea>
+                        <label class="form-label">Qual o seu setor de atuação?</label>
+                        <select name="sector" class="form-control" required>
+                          <option value="">Selecione uma opção</option>
+                          <option value="servicos">Serviços</option>
+                          <option value="comercio">Comércio</option>
+                          <option value="industria">Indústria</option>
+                          <option value="tecnologia">Tecnologia</option>
+                          <option value="outro">Outro</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- 7. Maior Dor no Financeiro (Checklist) -->
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="form-label">Qual é a maior dor hoje no seu financeiro?</label>
+                        <div class="checkbox-group row g-2">
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_pain[]" value="falta-controle" id="pain-controle">
+                              <label class="form-check-label" for="pain-controle">Falta de controle</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_pain[]" value="falta-tempo" id="pain-tempo">
+                              <label class="form-check-label" for="pain-tempo">Falta de tempo</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_pain[]" value="falta-previsibilidade" id="pain-previsibilidade">
+                              <label class="form-check-label" for="pain-previsibilidade">Falta de previsibilidade</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_pain[]" value="retrabalho-operacional" id="pain-retrabalho">
+                              <label class="form-check-label" for="pain-retrabalho">Retrabalho operacional</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_pain[]" value="inadimplencia" id="pain-inadimplencia">
+                              <label class="form-check-label" for="pain-inadimplencia">Inadimplência</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_pain[]" value="desorganizacao" id="pain-desorganizacao">
+                              <label class="form-check-label" for="pain-desorganizacao">Desorganização</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_pain[]" value="multas-juros" id="pain-multas">
+                              <label class="form-check-label" for="pain-multas">Pagamento de multas e juros por atraso</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 8. Áreas Financeiras que Precisa de Ajuda (Checklist) -->
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="form-label">Quais áreas financeiras você precisa de ajuda?</label>
+                        <div class="checkbox-group row g-2">
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_areas[]" value="contas-pagar" id="area-pagar">
+                              <label class="form-check-label" for="area-pagar">Contas a pagar</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_areas[]" value="contas-receber" id="area-receber">
+                              <label class="form-check-label" for="area-receber">Contas a receber</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_areas[]" value="conciliacao-bancaria" id="area-conciliacao">
+                              <label class="form-check-label" for="area-conciliacao">Conciliação bancária</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_areas[]" value="fluxo-caixa" id="area-fluxo">
+                              <label class="form-check-label" for="area-fluxo">Fluxo de caixa</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check checkbox-square">
+                              <input class="form-check-input" type="checkbox" name="financial_areas[]" value="previsao-financeira" id="area-previsao">
+                              <label class="form-check-label" for="area-previsao">Previsão financeira</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 9. Previsibilidade de Fluxo de Caixa -->
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="form-label">Você possui previsibilidade de fluxo de caixa dos próximos 30 dias?</label>
+                        <select name="cashflow_predictability" class="form-control" required>
+                          <option value="">Selecione uma opção</option>
+                          <option value="sim">Sim</option>
+                          <option value="parcial">Parcial</option>
+                          <option value="nao">Não</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- 10. Nível de Urgência -->
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="form-label">Em que nível você considera a urgência de organizar seu financeiro?</label>
+                        <select name="urgency_level" class="form-control" required>
+                          <option value="">Selecione uma opção</option>
+                          <option value="urgente">Preciso resolver urgente</option>
+                          <option value="30-dias">Quero resolver nos próximos 30 dias</option>
+                          <option value="avaliando">Estou avaliando opções</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -875,6 +1004,74 @@
 
     </section><!-- /Contact Section -->
 
+@endsection
+
+@section('styles')
+<style>
+.checkbox-square .form-check {
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.checkbox-square .form-check-input {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 2px solid #dee2e6 !important;
+  cursor: pointer;
+  margin-top: 0;
+  margin-right: 0.5rem;
+  display: block !important;
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+  background-color: #fff;
+  position: relative;
+}
+
+.checkbox-square .form-check-input:checked {
+  background-color: #F27920 !important;
+  border-color: #F27920 !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e") !important;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.checkbox-square .form-check-input:focus {
+  border-color: #F27920 !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(242, 121, 32, 0.25);
+}
+
+.checkbox-square .form-check-label {
+  cursor: pointer;
+  margin-left: 0;
+  padding-top: 0;
+  flex: 1;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.5;
+  display: block;
+}
+
+.checkbox-square .col-md-6 {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.checkbox-group .col-md-6:last-child {
+  margin-bottom: 0;
+}
+
+.checkbox-group .col-md-6 .form-check {
+  width: 100%;
+}
+</style>
 @endsection
 
 @section('scripts')
