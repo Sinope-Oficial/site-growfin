@@ -80,7 +80,7 @@
 <body>
     <div class="login-card">
         <div class="login-header">
-            <img src="{{ asset('assets/img/logo.jpeg') }}" alt="GrowFin">
+            <img src="{{ asset('assets/img/logo-horizontal.png') }}" alt="GrowFin">
             <h2 class="mb-0">Painel de Controle</h2>
             <p class="text-muted">Faça login para continuar</p>
         </div>

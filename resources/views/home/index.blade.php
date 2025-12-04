@@ -51,7 +51,7 @@
 
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
             <div class="hero-image">
-              <img src="{{ asset('assets/img/logo.jpeg') }}" alt="BPO Financeiro" class="img-fluid logo-float">
+              <img src="{{ asset('assets/img/logo-sem-fundo.png') }}" alt="BPO Financeiro" class="img-fluid logo-float">
               <div class="image-badge">
                 <span>BPO Financeiro</span>
                 <p>Soluções Completas</p>
