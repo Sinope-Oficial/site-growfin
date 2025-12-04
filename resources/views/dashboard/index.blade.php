@@ -333,7 +333,7 @@
                                         -
                                     @endif
                                 </td>
-                                <td>{{ $form->created_at->format('d/m/Y H:i') }}</td>
+                                <td>{{ optional($form->submitted_at ?? $form->created_at)->format('d/m/Y') }}</td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('dashboard.forms.show', $form) }}" 

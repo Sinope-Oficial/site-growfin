@@ -516,8 +516,8 @@
                     <!-- Data de Envio -->
                     <div class="col-12">
                         <div class="form-group-custom">
-                            <label class="form-label-custom">Data de Envio</label>
-                            <input type="text" class="form-control-custom" value="{{ $form->created_at->format('d/m/Y H:i:s') }}" disabled>
+                            <label class="form-label-custom">Data de Submissão</label>
+                            <input type="text" class="form-control-custom" value="{{ optional($form->submitted_at ?? $form->created_at)->format('d/m/Y') }}" disabled>
                         </div>
                     </div>
                 </div>

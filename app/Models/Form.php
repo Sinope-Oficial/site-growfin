@@ -23,6 +23,7 @@ class Form extends Model
         'status',
         'type',
         'message',
+        'submitted_at',
     ];
 
     protected $casts = [
@@ -30,6 +31,15 @@ class Form extends Model
         'financial_areas' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'submitted_at' => 'datetime',
     ];
+
+    /**
+     * Relacionamento com FormResponse
+     */
+    public function responses()
+    {
+        return $this->hasMany(FormResponse::class)->orderBy('order');
+    }
 }
 

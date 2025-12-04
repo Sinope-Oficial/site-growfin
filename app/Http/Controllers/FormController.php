@@ -3,11 +3,80 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
+use App\Models\FormResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class FormController extends Controller
 {
+    /**
+     * Mapeamento de campos do formulário com seus labels legíveis
+     */
+    private function getFieldLabels(): array
+    {
+        return [
+            'name' => 'Nome',
+            'lastname' => 'Sobrenome',
+            'email' => 'E-mail',
+            'phone' => 'Telefone',
+            'company_size' => 'Tamanho da Empresa',
+            'sector' => 'Setor de Atuação',
+            'financial_pain' => 'Maior Dor no Financeiro',
+            'financial_areas' => 'Áreas Financeiras que Precisa de Ajuda',
+            'cashflow_predictability' => 'Previsibilidade de Fluxo de Caixa',
+            'urgency_level' => 'Nível de Urgência',
+        ];
+    }
+
+    /**
+     * Mapeamento de valores para labels legíveis
+     */
+    private function getValueLabels(): array
+    {
+        return [
+            'company_size' => [
+                'micro' => 'Micro',
+                'pequena' => 'Pequena',
+                'media' => 'Média',
+                'grande' => 'Grande',
+            ],
+            'sector' => [
+                'servicos' => 'Serviços',
+                'comercio' => 'Comércio',
+                'industria' => 'Indústria',
+                'tecnologia' => 'Tecnologia',
+                'outro' => 'Outro',
+            ],
+            'financial_pain' => [
+                'falta-controle' => 'Falta de controle',
+                'falta-tempo' => 'Falta de tempo',
+                'falta-previsibilidade' => 'Falta de previsibilidade',
+                'retrabalho-operacional' => 'Retrabalho operacional',
+                'inadimplencia' => 'Inadimplência',
+                'desorganizacao' => 'Desorganização',
+                'multas-juros' => 'Pagamento de multas e juros por atraso',
+            ],
+            'financial_areas' => [
+                'contas-pagar' => 'Contas a pagar',
+                'contas-receber' => 'Contas a receber',
+                'conciliacao-bancaria' => 'Conciliação bancária',
+                'fluxo-caixa' => 'Fluxo de caixa',
+                'previsao-financeira' => 'Previsão financeira',
+            ],
+            'cashflow_predictability' => [
+                'sim' => 'Sim',
+                'parcial' => 'Parcial',
+                'nao' => 'Não',
+            ],
+            'urgency_level' => [
+                'urgente' => 'Preciso resolver urgente',
+                '30-dias' => 'Quero resolver nos próximos 30 dias',
+                'avaliando' => 'Estou avaliando opções',
+            ],
+        ];
+    }
+
     /**
      * Store a newly created form submission.
      */
@@ -36,15 +105,66 @@ class FormController extends Controller
             ], 422);
         }
 
-        $data = $request->all();
-        $data['status'] = 'falta-atender'; // Status padrão para novos formulários
-        $form = Form::create($data);
+        try {
+            DB::beginTransaction();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Sua solicitação de orçamento foi enviada. Obrigado!',
-            'data' => $form
-        ], 201);
+            $data = $request->all();
+            $data['status'] = 'falta-atender'; // Status padrão para novos formulários
+            // Registrar data e hora de submissão no horário de Brasília
+            $data['submitted_at'] = now('America/Sao_Paulo');
+            
+            $form = Form::create($data);
+
+            // Salvar cada resposta individual na tabela form_responses
+            $fieldLabels = $this->getFieldLabels();
+            $valueLabels = $this->getValueLabels();
+            $order = 1;
+
+            foreach ($fieldLabels as $fieldName => $fieldLabel) {
+                $value = $request->input($fieldName);
+                
+                if ($value !== null && $value !== '') {
+                    // Tratar arrays (checkboxes)
+                    if (is_array($value)) {
+                        $valueArray = [];
+                        foreach ($value as $item) {
+                            $label = $valueLabels[$fieldName][$item] ?? $item;
+                            $valueArray[] = $label;
+                        }
+                        $displayValue = implode(', ', $valueArray);
+                    } else {
+                        // Tratar valores simples
+                        $displayValue = $valueLabels[$fieldName][$value] ?? $value;
+                    }
+
+                    FormResponse::create([
+                        'form_id' => $form->id,
+                        'field_name' => $fieldName,
+                        'field_label' => $fieldLabel,
+                        'field_value' => is_array($value) ? json_encode($value) : $value,
+                        'field_type' => is_array($value) ? 'checkbox' : (in_array($fieldName, ['company_size', 'sector', 'cashflow_predictability', 'urgency_level']) ? 'select' : 'text'),
+                        'order' => $order++,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Sua solicitação de orçamento foi enviada. Obrigado!',
+                'data' => $form->load('responses')
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao processar formulário. Tente novamente.',
+                'error' => config('app.debug') ? $e->getMessage() : null
+            ], 500);
+        }
     }
 }
 

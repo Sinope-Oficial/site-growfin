@@ -40,7 +40,7 @@
                     <td>{{ $form->sector }}</td>
                     <td>{{ $form->status }}</td>
                     <td>{{ $form->urgency_level }}</td>
-                    <td>{{ optional($form->created_at)->format('d/m/Y H:i') }}</td>
+                    <td>{{ optional($form->submitted_at ?? $form->created_at)->format('d/m/Y') }}</td>
                 </tr>
             @endforeach
         </tbody>

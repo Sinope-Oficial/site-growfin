@@ -36,8 +36,15 @@ class DashboardController extends Controller
             ->toArray();
 
         // Dados para gráfico de evolução temporal (últimos 30 dias)
-        $evolutionData = Form::selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->where('created_at', '>=', now()->subDays(30))
+        // Usar submitted_at se disponível, senão usar created_at
+        $evolutionData = Form::selectRaw('DATE(COALESCE(submitted_at, created_at)) as date, COUNT(*) as count')
+            ->where(function($query) {
+                $query->where('submitted_at', '>=', now()->subDays(30))
+                      ->orWhere(function($q) {
+                          $q->whereNull('submitted_at')
+                            ->where('created_at', '>=', now()->subDays(30));
+                      });
+            })
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get()
@@ -56,6 +63,7 @@ class DashboardController extends Controller
      */
     public function show(Form $form)
     {
+        $form->load('responses'); // Carregar respostas detalhadas
         return view('dashboard.show', compact('form'));
     }
 
@@ -170,6 +178,7 @@ class DashboardController extends Controller
                 'Dores Financeiras',
                 'Áreas Financeiras',
                 'Observação',
+                'Data/Hora Submissão',
                 'Criado em',
             ], ';');
 
@@ -191,6 +200,7 @@ class DashboardController extends Controller
                     $financialPain,
                     $financialAreas,
                     $form->message,
+                    optional($form->submitted_at)->format('d/m/Y H:i:s') ?: optional($form->created_at)->format('d/m/Y H:i:s'),
                     optional($form->created_at)->format('d/m/Y H:i'),
                 ], ';');
             }
