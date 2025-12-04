@@ -31,6 +31,9 @@
   <!-- Main CSS File -->
   <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
 
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
   @yield('styles')
 </head>
 

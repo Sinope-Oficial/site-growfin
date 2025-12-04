@@ -901,6 +901,13 @@
                             </div>
                           </div>
                         </div>
+                        <div class="col-12" style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                          <label class="form-label mb-2">Verificação de Segurança <span class="text-danger">*</span></label>
+                          <div class="g-recaptcha" data-sitekey="6LdIIyEsAAAAAJsoBQNPlIxka9waUNF4vO7mUTcG" data-callback="recaptchaCallback" id="recaptcha-widget"></div>
+                          <div class="invalid-feedback" id="recaptcha-error" style="display: none; text-align: center; margin-top: 0.5rem;">
+                            Por favor, marque a opção "Não sou um robô" para continuar.
+                          </div>
+                        </div>
                       </div>
     
                       <div class="loading">Enviando</div>
@@ -1276,6 +1283,18 @@ select.is-invalid ~ .invalid-feedback {
 
 @section('scripts')
 <script>
+// Callback do reCAPTCHA - deve ser global
+function recaptchaCallback() {
+  const recaptchaError = document.getElementById('recaptcha-error');
+  const recaptchaWidget = document.getElementById('recaptcha-widget');
+  if (recaptchaError) recaptchaError.style.display = 'none';
+  if (recaptchaWidget) {
+    recaptchaWidget.style.border = '';
+    recaptchaWidget.style.borderRadius = '';
+    recaptchaWidget.style.padding = '';
+  }
+}
+
 // Desabilitar validação da biblioteca php-email-form para este formulário
 (function() {
   const form = document.querySelector('form#quote-form');
@@ -1478,6 +1497,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
+  
   // Validação de email em tempo real
   const emailInput = document.getElementById('email');
   if (emailInput) {
@@ -1626,6 +1646,40 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!firstErrorField) firstErrorField = urgencyInput;
       }
       
+      // 11. Validação do reCAPTCHA
+      let recaptchaResponse = '';
+      try {
+        // Verifica se o grecaptcha está disponível
+        if (typeof grecaptcha !== 'undefined') {
+          recaptchaResponse = grecaptcha.getResponse();
+        }
+      } catch (error) {
+        console.error('Erro ao verificar reCAPTCHA:', error);
+      }
+      
+      if (!recaptchaResponse || recaptchaResponse === '') {
+        isValid = false;
+        const recaptchaError = document.getElementById('recaptcha-error');
+        const recaptchaWidget = document.getElementById('recaptcha-widget');
+        if (recaptchaError) recaptchaError.style.display = 'block';
+        if (recaptchaWidget) {
+          recaptchaWidget.style.border = '2px solid #dc3545';
+          recaptchaWidget.style.borderRadius = '4px';
+          recaptchaWidget.style.padding = '5px';
+        }
+        if (!firstErrorField) firstErrorField = recaptchaWidget || recaptchaError;
+      } else {
+        // Limpar erro se o reCAPTCHA estiver válido
+        const recaptchaError = document.getElementById('recaptcha-error');
+        const recaptchaWidget = document.getElementById('recaptcha-widget');
+        if (recaptchaError) recaptchaError.style.display = 'none';
+        if (recaptchaWidget) {
+          recaptchaWidget.style.border = '';
+          recaptchaWidget.style.borderRadius = '';
+          recaptchaWidget.style.padding = '';
+        }
+      }
+      
       return { isValid, firstErrorField };
     }
     
@@ -1671,7 +1725,37 @@ document.addEventListener('DOMContentLoaded', function() {
         phoneInput.value = phoneValue;
       }
       
+      // Verificar novamente o reCAPTCHA antes de enviar
+      let recaptchaResponse = '';
+      try {
+        if (typeof grecaptcha !== 'undefined') {
+          recaptchaResponse = grecaptcha.getResponse();
+        }
+      } catch (error) {
+        console.error('Erro ao verificar reCAPTCHA:', error);
+      }
+      
+      if (!recaptchaResponse || recaptchaResponse === '') {
+        if (errorMessage) {
+          errorMessage.innerHTML = 'Por favor, marque a opção "Não sou um robô" para continuar.';
+          errorMessage.style.display = 'block';
+        }
+        const recaptchaError = document.getElementById('recaptcha-error');
+        const recaptchaWidget = document.getElementById('recaptcha-widget');
+        if (recaptchaError) recaptchaError.style.display = 'block';
+        if (recaptchaWidget) {
+          recaptchaWidget.style.border = '2px solid #dc3545';
+          recaptchaWidget.style.borderRadius = '4px';
+          recaptchaWidget.style.padding = '5px';
+          recaptchaWidget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      
       const formData = new FormData(form);
+      
+      // Adicionar o token do reCAPTCHA ao FormData
+      formData.append('g-recaptcha-response', recaptchaResponse);
       
       // Obter o token CSRF do input hidden do formulário
       const csrfToken = form.querySelector('input[name="_token"]');
