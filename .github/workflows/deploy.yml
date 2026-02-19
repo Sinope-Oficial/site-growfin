@@ -1,0 +1,64 @@
+# Deploy automático via FTP ao fazer merge na branch main
+#
+# Configurar no GitHub: Settings → Secrets and variables → Actions
+# Secrets necessários:
+#   FTP_SERVER   - endereço do servidor FTP (ex: ftp.seudominio.com)
+#   FTP_USERNAME - usuário FTP
+#   FTP_PASSWORD - senha FTP
+#   FTP_REMOTE   - pasta remota no servidor (ex: /public_html ou /htdocs/site-growfin)
+#
+# Opcional para FTPS (FTP sobre SSL):
+#   FTP_SECURE   - defina como "true" para usar FTPS
+#
+# No servidor: mantenha o .env configurado (não é enviado pelo workflow).
+# As pastas storage/ e bootstrap/cache/ precisam ter permissão de escrita (ex: 775).
+#
+name: Deploy FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy via FTP
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, xml, ctype, json, curl
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader --prefer-dist
+
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp://92.112.189.25
+          username: u969740184.usergrofin
+          password: vm0x:b7deH7!q8B/
+          local-dir: ./
+          server-dir: /home/u969740184/domains/growfingestao.com.br/public_html
+          exclude: |
+            **/.git*
+            **/.github
+            **/.env
+            **/.env.*
+            **/node_modules
+            **/tests
+            **/.phpunit*
+            **/*.md
+            **/.gitignore
+            **/storage/logs/*
+            **/storage/framework/cache/*
+            **/storage/framework/sessions/*
+            **/storage/framework/views/*
+            **/storage/framework/testing/*
+          dangerous-clean-slate: false
