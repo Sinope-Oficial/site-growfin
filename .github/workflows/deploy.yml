@@ -2,7 +2,7 @@
 #
 # Configurar no GitHub: Settings → Secrets and variables → Actions
 # Secrets necessários:
-#   FTP_SERVER   - endereço do servidor FTP (ex: ftp.seudominio.com)
+#   FTP_SERVER   - apenas IP ou domínio, SEM "ftp://" (ex: 92.112.189.25 ou ftp.seudominio.com)
 #   FTP_USERNAME - usuário FTP
 #   FTP_PASSWORD - senha FTP
 #   FTP_REMOTE   - pasta remota no servidor (ex: /public_html ou /htdocs/site-growfin)
@@ -41,7 +41,7 @@ jobs:
       - name: Deploy to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp://92.112.189.25
+          server: 92.112.189.25
           username: u969740184.usergrofin
           password: vm0x:b7deH7!q8B/
           local-dir: ./
