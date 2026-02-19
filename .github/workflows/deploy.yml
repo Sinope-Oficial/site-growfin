@@ -45,7 +45,7 @@ jobs:
           username: u969740184.usergrofin
           password: vm0x:b7deH7!q8B/
           local-dir: ./
-          server-dir: /home/u969740184/domains/growfingestao.com.br/public_html
+          server-dir: /
           exclude: |
             **/.git*
             **/.github
