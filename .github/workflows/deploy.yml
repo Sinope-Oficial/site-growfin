@@ -44,8 +44,8 @@ jobs:
           server: 92.112.189.25
           username: u969740184.usergrofin
           password: vm0x:b7deH7!q8B/
-          local-dir: ../public_html
-          server-dir: ../public_html
+          local-dir: ../
+          server-dir: ../
           exclude: |
             **/.git*
             **/.github
