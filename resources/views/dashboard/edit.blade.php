@@ -146,10 +146,11 @@
                         <label class="form-label">Tamanho da Empresa <span class="text-danger">*</span></label>
                         <select name="company_size" class="form-select" required>
                             <option value="">Selecione</option>
-                            <option value="micro" {{ old('company_size', $form->company_size) == 'micro' ? 'selected' : '' }}>Micro</option>
-                            <option value="pequena" {{ old('company_size', $form->company_size) == 'pequena' ? 'selected' : '' }}>Pequena</option>
-                            <option value="media" {{ old('company_size', $form->company_size) == 'media' ? 'selected' : '' }}>Média</option>
-                            <option value="grande" {{ old('company_size', $form->company_size) == 'grande' ? 'selected' : '' }}>Grande</option>
+                            <option value="0_30" {{ old('company_size', $form->company_size) == '0_30' ? 'selected' : '' }}>R$ 00,00 a R$ 30 mil</option>
+                            <option value="30_50" {{ old('company_size', $form->company_size) == '30_50' ? 'selected' : '' }}>R$ 30 mil a R$ 50 mil</option>
+                            <option value="50_100" {{ old('company_size', $form->company_size) == '50_100' ? 'selected' : '' }}>R$ 50 mil a R$ 100 mil</option>
+                            <option value="100_500" {{ old('company_size', $form->company_size) == '100_500' ? 'selected' : '' }}>R$ 100 mil a R$ 500 mil</option>
+                            <option value="500_plus" {{ old('company_size', $form->company_size) == '500_plus' ? 'selected' : '' }}>Mais de R$ 500 mil</option>
                         </select>
                     </div>
                     <div class="col-md-6">

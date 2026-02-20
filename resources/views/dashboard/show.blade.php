@@ -399,10 +399,11 @@
                             <label class="form-label-custom">Tamanho da Empresa</label>
                             @php
                                 $sizes = [
-                                    'micro' => 'Micro',
-                                    'pequena' => 'Pequena',
-                                    'media' => 'Média',
-                                    'grande' => 'Grande'
+                                    '0_30' => 'R$ 00,00 a R$ 30 mil',
+                                    '30_50' => 'R$ 30 mil a R$ 50 mil',
+                                    '50_100' => 'R$ 50 mil a R$ 100 mil',
+                                    '100_500' => 'R$ 100 mil a R$ 500 mil',
+                                    '500_plus' => 'Mais de R$ 500 mil'
                                 ];
                             @endphp
                             <input type="text" class="form-control-custom" value="{{ $sizes[$form->company_size] ?? ucfirst($form->company_size ?? 'Não informado') }}" disabled>
