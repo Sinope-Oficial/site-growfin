@@ -9,9 +9,9 @@
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
     
-    # Redirecionar tudo para public/index.php (Laravel)
-    # Exceto se já estiver tentando acessar public/
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ public/index.php [L]
+    # Redirecionar tudo para public_html/index.php (Laravel)
+    # Exceto se já estiver tentando acessar public_html/
+    RewriteCond %{REQUEST_URI} !^/public_html/
+    RewriteRule ^(.*)$ public_html/index.php [L]
 </IfModule>
 
