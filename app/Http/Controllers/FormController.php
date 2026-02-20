@@ -36,10 +36,11 @@ class FormController extends Controller
     {
         return [
             'company_size' => [
-                'micro' => 'Micro',
-                'pequena' => 'Pequena',
-                'media' => 'Média',
-                'grande' => 'Grande',
+                '0_30' => 'R$ 00,00 a R$ 30 mil',
+                '30_50' => 'R$ 30 mil a R$ 50 mil',
+                '50_100' => 'R$ 50 mil a R$ 100 mil',
+                '100_500' => 'R$ 100 mil a R$ 500 mil',
+                '500_plus' => 'Mais de R$ 500 mil',
             ],
             'sector' => [
                 'servicos' => 'Serviços',
@@ -87,7 +88,7 @@ class FormController extends Controller
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
-            'company_size' => 'required|string|in:micro,pequena,media,grande',
+            'company_size' => 'required|string|in:0_30,30_50,50_100,100_500,500_plus',
             'sector' => 'required|string|in:servicos,comercio,industria,tecnologia,outro',
             'financial_pain' => 'nullable|array',
             'financial_pain.*' => 'string|in:falta-controle,falta-tempo,falta-previsibilidade,retrabalho-operacional,inadimplencia,desorganizacao,multas-juros',
