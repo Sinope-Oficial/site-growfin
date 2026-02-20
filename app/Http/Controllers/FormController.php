@@ -151,6 +151,8 @@ class FormController extends Controller
 
             DB::commit();
 
+            $this->enviarEmailNovoFormulario($form);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Sua solicitação de orçamento foi enviada. Obrigado!',
@@ -166,6 +168,42 @@ class FormController extends Controller
                 'error' => config('app.debug') ? $e->getMessage() : null
             ], 500);
         }
+    }
+
+    /**
+     * Envia e-mail nativo (mail) notificando novo formulário.
+     * Destinatário, Remetente, Assunto e Corpo configuráveis via .env
+     */
+    private function enviarEmailNovoFormulario(Form $form): void
+    {
+        $destinatario = env('MAIL_FORM_TO', 'leonardoafonso1048@gmail.com');
+        $remetente = env('MAIL_FORM_FROM_NAME', 'GrowFin') . ' <' . env('MAIL_FORM_FROM', 'noreply@growfin.com') . '>';
+        $assunto = env('MAIL_FORM_SUBJECT', 'GrowFin: Novo formulário recebido');
+
+        $valorLabels = $this->getValueLabels();
+        $campoLabels = $this->getFieldLabels();
+
+        $linhas = ["Um novo formulário foi enviado no site GrowFin.\n"];
+        $linhas[] = "Nome: {$form->name} {$form->lastname}";
+        $linhas[] = "E-mail: {$form->email}";
+        $linhas[] = "Telefone: {$form->phone}";
+        $linhas[] = "Tamanho: " . ($valorLabels['company_size'][$form->company_size] ?? $form->company_size);
+        $linhas[] = "Setor: " . ($valorLabels['sector'][$form->sector] ?? $form->sector);
+        $linhas[] = "Previsibilidade fluxo: " . ($valorLabels['cashflow_predictability'][$form->cashflow_predictability] ?? $form->cashflow_predictability);
+        $linhas[] = "Urgência: " . ($valorLabels['urgency_level'][$form->urgency_level] ?? $form->urgency_level);
+        $linhas[] = "Data/hora: " . ($form->submitted_at?->format('d/m/Y H:i') ?? '-');
+
+        $corpo = implode("\n", $linhas);
+
+        $headers = [
+            'MIME-Version: 1.0',
+            'Content-type: text/plain; charset=UTF-8',
+            'From: ' . $remetente,
+            'Reply-To: ' . $form->email,
+            'X-Mailer: PHP/' . phpversion(),
+        ];
+
+        @mail($destinatario, $assunto, $corpo, implode("\r\n", $headers));
     }
 }
 
