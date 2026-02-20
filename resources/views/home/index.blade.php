@@ -994,20 +994,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            @if (config('app.env') !== 'local')
-                                                <div class="col-12"
-                                                    style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
-                                                    <label class="form-label mb-2">Verificação de Segurança <span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="g-recaptcha"
-                                                        data-sitekey="6LdIIyEsAAAAAJsoBQNPlIxka9waUNF4vO7mUTcG"
-                                                        data-callback="recaptchaCallback" id="recaptcha-widget"></div>
-                                                    <div class="invalid-feedback" id="recaptcha-error"
-                                                        style="display: none; text-align: center; margin-top: 0.5rem;">
-                                                        Por favor, marque a opção "Não sou um robô" para continuar.
-                                                    </div>
+                                            <div class="col-12"
+                                                style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                                                <label class="form-label mb-2">Verificação de Segurança <span
+                                                        class="text-danger">*</span></label>
+                                                <div class="g-recaptcha"
+                                                    data-sitekey="6LdIIyEsAAAAAJsoBQNPlIxka9waUNF4vO7mUTcG"
+                                                    data-callback="recaptchaCallback" id="recaptcha-widget"></div>
+                                                <div class="invalid-feedback" id="recaptcha-error"
+                                                    style="display: none; text-align: center; margin-top: 0.5rem;">
+                                                    Por favor, marque a opção "Não sou um robô" para continuar.
                                                 </div>
-                                            @endif
+                                            </div>
                                         </div>
 
                                         <div class="loading">Enviando</div>
