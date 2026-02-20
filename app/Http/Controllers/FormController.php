@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class FormController extends Controller
 {
@@ -173,17 +174,14 @@ class FormController extends Controller
     }
 
     /**
-     * Envia e-mail nativo (mail) notificando novo formulário.
-     * Destinatário, Remetente, Assunto e Corpo configuráveis via .env
+     * Envia e-mail via SMTP (Laravel Mail) notificando novo formulário.
+     * Destinatário, Remetente, Assunto configuráveis via .env
      */
     private function enviarEmailNovoFormulario(Form $form): bool
     {
         $destinatario = env('MAIL_FORM_TO', 'leonardoafonso1048@gmail.com');
-        $remetente = env('MAIL_FORM_FROM_NAME', 'GrowFin') . ' <' . env('MAIL_FORM_FROM', 'noreply@growfin.com') . '>';
         $assunto = env('MAIL_FORM_SUBJECT', 'GrowFin: Novo formulário recebido');
-
         $valorLabels = $this->getValueLabels();
-        $campoLabels = $this->getFieldLabels();
 
         $linhas = ["Um novo formulário foi enviado no site GrowFin.\n"];
         $linhas[] = "Nome: {$form->name} {$form->lastname}";
@@ -194,32 +192,21 @@ class FormController extends Controller
         $linhas[] = "Previsibilidade fluxo: " . ($valorLabels['cashflow_predictability'][$form->cashflow_predictability] ?? $form->cashflow_predictability);
         $linhas[] = "Urgência: " . ($valorLabels['urgency_level'][$form->urgency_level] ?? $form->urgency_level);
         $linhas[] = "Data/hora: " . ($form->submitted_at?->format('d/m/Y H:i') ?? '-');
-
         $corpo = implode("\n", $linhas);
 
-        $headers = [
-            'MIME-Version: 1.0',
-            'Content-type: text/plain; charset=UTF-8',
-            'From: ' . $remetente,
-            'Reply-To: ' . $form->email,
-            'X-Mailer: PHP/' . phpversion(),
-        ];
-
         try {
-            $enviado = @mail($destinatario, $assunto, $corpo, implode("\r\n", $headers));
-            if ($enviado) {
-                Log::info('Email formulário enviado com sucesso', [
-                    'destinatario' => $destinatario,
-                    'form_id' => $form->id,
-                    'cliente' => "{$form->name} {$form->lastname}",
-                ]);
-            } else {
-                Log::error('Falha ao enviar email do formulário', [
-                    'destinatario' => $destinatario,
-                    'form_id' => $form->id,
-                ]);
-            }
-            return (bool) $enviado;
+            Mail::raw($corpo, function ($message) use ($destinatario, $assunto, $form) {
+                $message->to($destinatario)
+                    ->subject($assunto)
+                    ->replyTo($form->email)
+                    ->from(env('MAIL_FORM_FROM', config('mail.from.address')), env('MAIL_FORM_FROM_NAME', config('mail.from.name')));
+            });
+            Log::info('Email formulário enviado com sucesso', [
+                'destinatario' => $destinatario,
+                'form_id' => $form->id,
+                'cliente' => "{$form->name} {$form->lastname}",
+            ]);
+            return true;
         } catch (\Throwable $e) {
             Log::error('Erro ao enviar email do formulário: ' . $e->getMessage(), [
                 'destinatario' => $destinatario,
