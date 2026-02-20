@@ -152,12 +152,13 @@ class FormController extends Controller
 
             DB::commit();
 
-            $this->enviarEmailNovoFormulario($form);
+            $emailEnviado = $this->enviarEmailNovoFormulario($form);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Sua solicitação de orçamento foi enviada. Obrigado!',
-                'data' => $form->load('responses')
+                'data' => $form->load('responses'),
+                'email_enviado' => $emailEnviado,
             ], 201);
 
         } catch (\Exception $e) {
@@ -175,7 +176,7 @@ class FormController extends Controller
      * Envia e-mail nativo (mail) notificando novo formulário.
      * Destinatário, Remetente, Assunto e Corpo configuráveis via .env
      */
-    private function enviarEmailNovoFormulario(Form $form): void
+    private function enviarEmailNovoFormulario(Form $form): bool
     {
         $destinatario = env('MAIL_FORM_TO', 'leonardoafonso1048@gmail.com');
         $remetente = env('MAIL_FORM_FROM_NAME', 'GrowFin') . ' <' . env('MAIL_FORM_FROM', 'noreply@growfin.com') . '>';
@@ -218,12 +219,14 @@ class FormController extends Controller
                     'form_id' => $form->id,
                 ]);
             }
+            return (bool) $enviado;
         } catch (\Throwable $e) {
             Log::error('Erro ao enviar email do formulário: ' . $e->getMessage(), [
                 'destinatario' => $destinatario,
                 'form_id' => $form->id,
                 'exception' => $e->getMessage(),
             ]);
+            return false;
         }
     }
 }
