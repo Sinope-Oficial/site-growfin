@@ -7,6 +7,7 @@ use App\Models\FormResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FormController extends Controller
 {
@@ -203,7 +204,27 @@ class FormController extends Controller
             'X-Mailer: PHP/' . phpversion(),
         ];
 
-        @mail($destinatario, $assunto, $corpo, implode("\r\n", $headers));
+        try {
+            $enviado = @mail($destinatario, $assunto, $corpo, implode("\r\n", $headers));
+            if ($enviado) {
+                Log::info('Email formulário enviado com sucesso', [
+                    'destinatario' => $destinatario,
+                    'form_id' => $form->id,
+                    'cliente' => "{$form->name} {$form->lastname}",
+                ]);
+            } else {
+                Log::error('Falha ao enviar email do formulário', [
+                    'destinatario' => $destinatario,
+                    'form_id' => $form->id,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::error('Erro ao enviar email do formulário: ' . $e->getMessage(), [
+                'destinatario' => $destinatario,
+                'form_id' => $form->id,
+                'exception' => $e->getMessage(),
+            ]);
+        }
     }
 }
 
