@@ -1922,11 +1922,6 @@
                         })
                         .then(data => {
                             if (loading) loading.style.display = 'none';
-                            // Log para inspecionar (aba Console)
-                            console.log('[GrowFin] Formulário enviado:', data);
-                            if (typeof data.email_enviado !== 'undefined') {
-                                console.log('[GrowFin] E-mail notificação:', data.email_enviado ? 'enviado' : 'falhou');
-                            }
                             if (data.success) {
                                 if (sentMessage) sentMessage.style.display = 'block';
                                 form.reset();
@@ -1953,7 +1948,7 @@
                                     'Ocorreu um erro ao enviar o formulário. Tente novamente.';
                                 errorMessage.style.display = 'block';
                             }
-                            console.error('[GrowFin] Erro no formulário:', error);
+                            console.error('Erro no formulário:', error);
                         });
 
                     return false;

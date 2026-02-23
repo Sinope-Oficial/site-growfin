@@ -7,7 +7,6 @@ use App\Models\FormResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class FormController extends Controller
@@ -153,13 +152,12 @@ class FormController extends Controller
 
             DB::commit();
 
-            $emailEnviado = $this->enviarEmailNovoFormulario($form);
+            $this->enviarEmailNovoFormulario($form);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Sua solicitação de orçamento foi enviada. Obrigado!',
-                'data' => $form->load('responses'),
-                'email_enviado' => $emailEnviado,
+                'data' => $form->load('responses')
             ], 201);
 
         } catch (\Exception $e) {
@@ -201,18 +199,8 @@ class FormController extends Controller
                     ->replyTo($form->email)
                     ->from(env('MAIL_FORM_FROM', config('mail.from.address')), env('MAIL_FORM_FROM_NAME', config('mail.from.name')));
             });
-            Log::info('Email formulário enviado com sucesso', [
-                'destinatario' => $destinatario,
-                'form_id' => $form->id,
-                'cliente' => "{$form->name} {$form->lastname}",
-            ]);
             return true;
         } catch (\Throwable $e) {
-            Log::error('Erro ao enviar email do formulário: ' . $e->getMessage(), [
-                'destinatario' => $destinatario,
-                'form_id' => $form->id,
-                'exception' => $e->getMessage(),
-            ]);
             return false;
         }
     }
